@@ -23,7 +23,7 @@ class User(AbstractUser):
     photo = models.ImageField(upload_to="dating/static_files/uploads/",
                               default="dating/static_files/default_avatar.png")
     phone = models.CharField(max_length=12, null=True)
-    address = models.ForeignKey(Address, on_delete=models.DO_NOTHING)
+    address = models.ForeignKey(Address, on_delete=models.DO_NOTHING, null=True)
 
     def __str__(self):
         return self.username
