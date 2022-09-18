@@ -1,10 +1,35 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Psinder</title>
+    <title>Homepage | Psinder</title>
 </head>
 <body>
-<p>Psinder App</p>
+<nav>
+    <div>
+        <img src="{% static "logo.png" %}" alt="logo" height="100px">
+    </div>
+    <ul>
+        <li>
+            <a href="">O aplikacji</a>
+        </li>
+        <li>
+            <a href="">Rejestracja</a>
+        </li>
+        <li>
+            <a href="">Logowanie</a>
+        </li>
+        <li>
+            <a href="">FAQ</a>
+        </li>
+        <li>
+            <a href="">Kontakt</a>
+        </li>
+    </ul>
+</nav>
+<footer>
+    <p>Autor: siedler</p>
+</footer>
 </body>
 </html>
