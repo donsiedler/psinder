@@ -43,8 +43,8 @@ class UserCreateForm(forms.ModelForm):
 
 
 class UserLoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(label="Nazwa użytkownika")
+    password = forms.CharField(widget=forms.PasswordInput, label="Hasło")
 
     def clean(self):
         cd = super().clean()
