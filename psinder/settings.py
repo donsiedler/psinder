@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'dating.apps.DatingConfig',
     'dating',
 ]
 
@@ -124,3 +123,5 @@ except ModuleNotFoundError:
     print("Database not configured in local_settings.py file!")
     print("Fill in the data and try again.")
     exit(0)
+
+AUTH_USER_MODEL = 'dating.User'
