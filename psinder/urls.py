@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from dating import views as dating
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', dating.MainPageView.as_view(), name="home-page"),
 ]
