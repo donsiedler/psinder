@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', dating.MainPageView.as_view(), name="home-page"),
     path('about/', dating.AboutAppView.as_view(), name="about-app"),
+    path('register/', dating.UserCreateView.as_view(), name="register"),
 ]
