@@ -7,8 +7,8 @@ User = get_user_model()
 
 
 class UserCreateForm(forms.ModelForm):
-    password1 = forms.CharField(widget=forms.PasswordInput, validators=[validate_password])
-    password2 = forms.CharField(widget=forms.PasswordInput, validators=[validate_password])
+    password1 = forms.CharField(widget=forms.PasswordInput, validators=[validate_password], label="Hasło")
+    password2 = forms.CharField(widget=forms.PasswordInput, validators=[validate_password], label="Powtórz hasło")
 
     class Meta:
         model = User
@@ -20,6 +20,19 @@ class UserCreateForm(forms.ModelForm):
             "gender",
             "dob",
         ]
+
+        help_texts = {
+            "username": "",
+        }
+
+        labels = {
+            "username": "Nazwa użytkownika",
+            "email": "Adres email",
+            "first_name": "Imię",
+            "last_name": "Nazwisko",
+            "gender": "Płeć",
+            "dob": "Data urodzenia",
+        }
 
     def clean(self):
         cd = super().clean()
