@@ -24,4 +24,5 @@ urlpatterns = [
     path('about/', dating.AboutAppView.as_view(), name="about-app"),
     path('register/', dating.UserCreateView.as_view(), name="register"),
     path('login/', dating.UserLoginView.as_view(), name="login"),
+    path('logout/', dating.UserLogoutView.as_view(), name="logout"),
 ]

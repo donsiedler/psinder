@@ -1,5 +1,5 @@
-from django.contrib.auth import get_user_model, authenticate, login
-from django.shortcuts import render
+from django.contrib.auth import get_user_model, authenticate, login, logout
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import FormView
@@ -57,3 +57,9 @@ class UserLoginView(FormView):
         user = authenticate(username=username, password=password)
         login(self.request, user)
         return super().form_valid(form)
+
+
+class UserLogoutView(View):
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return redirect("home-page")

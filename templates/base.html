@@ -8,6 +8,8 @@
 
 </head>
 <body>
+
+<!--- NAVIGATION SECTION --->
 <nav>
     <div>
         <a href="{% url "home-page" %}">
@@ -28,7 +30,7 @@
             </li>
         {% else %}
             <li>
-                <a href="">Wyloguj</a>
+                <a href="{% url "logout" %}">Wyloguj</a>
             </li>
         {% endif %}
         <li>
@@ -39,15 +41,18 @@
         </li>
     </ul>
 </nav>
+<!--- END OF NAVIGATION SECTION --->
 
 {% block content %}
 {% endblock content %}
 
+<!--- FOOTER SECTION --->
 <footer>
-    {% if user %}
+    {% if not user.is_anonymous %}
         <p>Aktualnie zalogowany użytkownik: {{ user.username }}</p>
     {% endif %}
     <p>Autor aplikacji: Siedlerski</p>
 </footer>
+<!--- END OF FOOTER SECTION --->
 </body>
 </html>

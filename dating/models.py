@@ -21,7 +21,7 @@ class User(AbstractUser):
     dob = models.DateField()
     bio = models.TextField(null=True)
     photo = models.ImageField(upload_to="dating/static_files/uploads/",
-                              default="dating/static_files/default_avatar.png")
+                              default="default_avatar.png")
     phone = models.CharField(max_length=12, null=True)
     address = models.ForeignKey(Address, on_delete=models.DO_NOTHING, null=True)
 
