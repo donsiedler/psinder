@@ -21,4 +21,5 @@ from dating import views as dating
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', dating.MainPageView.as_view(), name="home-page"),
+    path('about/', dating.AboutAppView.as_view(), name="about-app"),
 ]

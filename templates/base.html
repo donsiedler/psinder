@@ -3,16 +3,19 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Homepage | Psinder</title>
+    <title>{% block head %} Strona główna {% endblock head %} | Psinder</title>
 </head>
 <body>
 <nav>
     <div>
-        <img src="{% static "logo.png" %}" alt="logo" height="100px">
+        <a href="{% url "home-page" %}">
+            <img src="{% static "logo.png" %}" alt="logo" height="100px">
+        </a>
+
     </div>
     <ul>
         <li>
-            <a href="">O aplikacji</a>
+            <a href="{% url "about-app" %}">O aplikacji</a>
         </li>
         <li>
             <a href="">Rejestracja</a>
@@ -28,6 +31,10 @@
         </li>
     </ul>
 </nav>
+
+{% block content %}
+{% endblock content %}
+
 <footer>
     <p>Autor: siedler</p>
 </footer>
