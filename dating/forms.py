@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 
@@ -40,3 +40,16 @@ class UserCreateForm(forms.ModelForm):
         pass2 = cd.get("password2")
         if pass1 != pass2:
             raise ValidationError("Hasła nie pasują!")
+
+
+class UserLoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    def clean(self):
+        cd = super().clean()
+        username = cd.get("username")
+        password = cd.get("password")
+        user = authenticate(username=username, password=password)
+        if user is None:
+            raise ValidationError("Nieprawidłowe dane logowania")

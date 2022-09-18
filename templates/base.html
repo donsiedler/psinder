@@ -17,12 +17,18 @@
         <li>
             <a href="{% url "about-app" %}">O aplikacji</a>
         </li>
-        <li>
+        {% if user.is_anonymous %}
+            <li>
+                <a href="{% url "login" %}">Zaloguj się</a>
+            </li>
+            <li>
             <a href="{% url "register" %}">Rejestracja</a>
-        </li>
-        <li>
-            <a href="">Logowanie</a>
-        </li>
+            </li>
+        {% else %}
+            <li>
+                <a href="">Wyloguj</a>
+            </li>
+        {% endif %}
         <li>
             <a href="">FAQ</a>
         </li>
@@ -36,7 +42,10 @@
 {% endblock content %}
 
 <footer>
-    <p>Autor: siedler</p>
+    {% if user %}
+        <p>Aktualnie zalogowany użytkownik: {{ user.username }}</p>
+    {% endif %}
+    <p>Autor aplikacji: Siedlerski</p>
 </footer>
 </body>
 </html>
