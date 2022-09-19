@@ -16,6 +16,8 @@ def create_fake_user():
     email = profile.get("mail")
     password = fake.password()
     name = profile.get("name").split(" ")
+    if name[0] == "pani" or name[0] == "pan":  # Remove the titles
+        del name[0]
     first_name = name[0]
     last_name = name[1]
     gender = 0 if first_name[-1] == "a" else 1  # If name ends with "a" assume it's 0 for female
