@@ -19,10 +19,10 @@ class User(AbstractUser):
 
     gender = models.PositiveSmallIntegerField(choices=GENDERS)
     dob = models.DateField()
-    bio = models.TextField(null=True)
-    photo = models.ImageField(upload_to="dating/static_files/uploads/",
+    bio = models.TextField(null=True, blank=True)
+    photo = models.ImageField(upload_to="user_image",
                               default="default_avatar.png")
-    phone = models.CharField(max_length=12, null=True)
+    phone = models.CharField(max_length=12, null=True, blank=True)
     address = models.ForeignKey(Address, on_delete=models.DO_NOTHING, null=True)
 
     def __str__(self):
