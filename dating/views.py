@@ -5,13 +5,20 @@ from django.views import View
 from django.views.generic import FormView
 
 from .forms import UserCreateForm, UserLoginForm
+from dogs.models import Dog
 
 User = get_user_model()
 
 
 class MainPageView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, "base.html")
+        user_profiles_count = User.objects.all().count()
+        dog_profiles_count = Dog.objects.all().count()
+        context = {
+            "user_profiles_count": user_profiles_count,
+            "dog_profiles_count": dog_profiles_count,
+        }
+        return render(request, "base.html", context=context)
 
 
 class AboutAppView(View):
