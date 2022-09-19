@@ -28,5 +28,6 @@ urlpatterns = [
     path('login/', dating.UserLoginView.as_view(), name="login"),
     path('logout/', dating.UserLogoutView.as_view(), name="logout"),
     path('dashboard/', dating.UserDashboardView.as_view(), name="dashboard"),
+    path('settings/<int:pk>/', dating.UserSettingsView.as_view(), name="settings"),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + \
               static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

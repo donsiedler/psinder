@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import FormView
+from django.views.generic import FormView, UpdateView
 
 from .forms import UserCreateForm, UserLoginForm
 from dogs.models import Dog
@@ -76,3 +76,10 @@ class UserLogoutView(View):
 class UserDashboardView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         return render(request, "dating/dashboard.html")
+
+
+class UserSettingsView(LoginRequiredMixin, UpdateView):
+    template_name = "dating/profile_settings.html"
+    model = User
+    fields = ["first_name", "last_name", "email", "gender", "dob", "bio", "photo", "phone", "address"]
+    success_url = reverse_lazy("dashboard")

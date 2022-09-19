@@ -17,13 +17,14 @@ class User(AbstractUser):
         (1, "male")
     )
 
-    gender = models.PositiveSmallIntegerField(choices=GENDERS)
-    dob = models.DateField()
-    bio = models.TextField(null=True, blank=True)
+    gender = models.PositiveSmallIntegerField(choices=GENDERS, verbose_name="Płeć")
+    dob = models.DateField(verbose_name="Data urodzenia")
+    bio = models.TextField(null=True, blank=True, verbose_name="Twój opis")
     photo = models.ImageField(upload_to="user_image",
-                              default="default_avatar.png")
-    phone = models.CharField(max_length=12, null=True, blank=True)
-    address = models.ForeignKey(Address, on_delete=models.DO_NOTHING, null=True)
+                              default="default_avatar.png",
+                              verbose_name="Zdjęcie profilowe")
+    phone = models.CharField(max_length=12, null=True, blank=True, verbose_name="Numer telefonu")
+    address = models.ForeignKey(Address, on_delete=models.DO_NOTHING, null=True, verbose_name="Adres")
 
     def __str__(self):
         return self.username

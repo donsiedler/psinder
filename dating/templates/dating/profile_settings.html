@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block head %}
+    Ustawienia profilu
+{% endblock head %}
+
+{% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+    </form>
+{% endblock content %}
