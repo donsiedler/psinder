@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model, authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
@@ -70,3 +71,8 @@ class UserLogoutView(View):
     def get(self, request, *args, **kwargs):
         logout(request)
         return redirect("home-page")
+
+
+class UserDashboardView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        return render(request, "dating/dashboard.html")

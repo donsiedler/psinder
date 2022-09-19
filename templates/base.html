@@ -30,6 +30,9 @@
             </li>
         {% else %}
             <li>
+                <a href="{% url "dashboard" %}">Mój profil</a>
+            </li>
+            <li>
                 <a href="{% url "logout" %}">Wyloguj</a>
             </li>
         {% endif %}

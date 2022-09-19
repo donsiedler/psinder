@@ -131,3 +131,5 @@ except ModuleNotFoundError:
     exit(0)
 
 AUTH_USER_MODEL = 'dating.User'
+
+LOGIN_URL = "/login/"

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block head %}
+    Mój profil
+{% endblock head %}
+
+{% block content %}
+    <nav>
+        <ul>
+            <li>
+                <a href="{% url "dashboard" %}">Mój profil</a>
+            </li>
+            <li>
+                <a href="">Moje psy</a>
+            </li>
+            <li>
+                <a href="">Centrum wiadomości</a>
+            </li>
+            <li>
+                <a href="">Spotkania</a>
+            </li>
+            <li>
+                <a href="">Opieka</a>
+            </li>
+            <li>
+                <a href="">Ustawienia profilu</a>
+            </li>
+        </ul>
+    </nav>
+{% endblock content %}
