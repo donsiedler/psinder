@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import FormView, UpdateView
 
-from .forms import UserCreateForm, UserLoginForm
+from .forms import UserCreateForm, UserLoginForm, UserProfileSettingsForm
 from dogs.models import Dog
 
 User = get_user_model()
@@ -81,5 +81,5 @@ class UserDashboardView(LoginRequiredMixin, View):
 class UserSettingsView(LoginRequiredMixin, UpdateView):
     template_name = "dating/profile_settings.html"
     model = User
-    fields = ["first_name", "last_name", "email", "gender", "dob", "bio", "photo", "phone", "address"]
+    form_class = UserProfileSettingsForm
     success_url = reverse_lazy("dashboard")
