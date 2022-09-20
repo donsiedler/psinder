@@ -29,5 +29,6 @@ urlpatterns = [
     path('logout/', dating.UserLogoutView.as_view(), name="logout"),
     path('dashboard/', dating.UserDashboardView.as_view(), name="dashboard"),
     path('settings/<int:pk>/', dating.UserSettingsView.as_view(), name="settings"),
+    path('settings/<int:pk>/change_password/', dating.UserChangePasswordView.as_view(), name="change-password"),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + \
               static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

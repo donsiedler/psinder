@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import FormView, UpdateView
 
-from .forms import UserCreateForm, UserLoginForm, UserProfileSettingsForm
+from .forms import UserCreateForm, UserLoginForm, UserProfileSettingsForm, UserChangePasswordForm
 from dogs.models import Dog
 
 User = get_user_model()
@@ -83,3 +83,20 @@ class UserSettingsView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserProfileSettingsForm
     success_url = reverse_lazy("dashboard")
+
+
+class UserChangePasswordView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        form = UserChangePasswordForm()
+        return render(request, "dating/change_password.html", context={"form": form})
+
+    def post(self, request, *args, **kwargs):
+        form = UserChangePasswordForm(request.POST)
+        if form.is_valid():
+            user_pk = kwargs.get("pk")
+            user = User.objects.get(pk=user_pk)
+            new_password = form.cleaned_data["new_password"]
+            user.set_password(new_password)
+            user.save()
+            return redirect("settings", user.pk)
+        return render(request, "dating/change_password.html", context={"form": form})

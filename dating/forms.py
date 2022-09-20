@@ -83,3 +83,14 @@ class UserProfileSettingsForm(forms.ModelForm):
             "phone": "Numer telefonu",
         }
 
+
+class UserChangePasswordForm(forms.Form):
+    new_password = forms.CharField(widget=forms.PasswordInput, validators=[validate_password])
+    new_password2 = forms.CharField(widget=forms.PasswordInput, validators=[validate_password])
+
+    def clean(self):
+        cd = super().clean()
+        new_password = cd.get("new_password")
+        new_password2 = cd.get("new_password2")
+        if new_password != new_password2:
+            raise ValidationError("Hasła nie są jednakowe!")
