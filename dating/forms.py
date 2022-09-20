@@ -53,3 +53,33 @@ class UserLoginForm(forms.Form):
         user = authenticate(username=username, password=password)
         if user is None:
             raise ValidationError("Nieprawidłowe dane logowania")
+
+
+class UserProfileSettingsForm(forms.ModelForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={"readonly": "readonly"}), label="Nazwa użytkownika")
+
+    class Meta:
+        model = User
+        fields = [
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "gender",
+            "dob",
+            "bio",
+            "photo",
+            "phone",
+        ]
+
+        labels = {
+            "email": "Adres email",
+            "first_name": "Imię",
+            "last_name": "Nazwisko",
+            "gender": "Płeć",
+            "dob": "Data urodzenia",
+            "bio": "Opis profilu",
+            "photo": "Zdjęcie profilowe",
+            "phone": "Numer telefonu",
+        }
+
