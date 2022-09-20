@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
 
 from .models import Address
 
@@ -21,6 +22,8 @@ FORM_LABELS_PL = {
     "city": "Miasto",
     "post_code": "Kod pocztowy",
 }
+
+POST_CODE_VALIDATOR_PL = RegexValidator('^\d{2}-\d{3}$', message="Nieprawidłowy kod pocztowy")
 
 
 class UserCreateForm(forms.ModelForm):
@@ -97,6 +100,8 @@ class UserChangePasswordForm(forms.Form):
 
 
 class UserAddressForm(forms.ModelForm):
+    post_code = forms.CharField(max_length=6, validators=[POST_CODE_VALIDATOR_PL], label="Kod pocztowy")
+
     class Meta:
         model = Address
         fields = ["street", "city", "post_code"]
