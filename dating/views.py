@@ -20,7 +20,7 @@ class MainPageView(View):
             "user_profiles_count": user_profiles_count,
             "dog_profiles_count": dog_profiles_count,
         }
-        return render(request, "base.html", context=context)
+        return render(request, "dating/home_page.html", context=context)
 
 
 class AboutAppView(View):

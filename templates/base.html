@@ -3,7 +3,7 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>{% block head %} Strona główna {% endblock head %} | Psinder</title>
+    <title>{% block head %} {% endblock head %} | Psinder</title>
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
 
 </head>
@@ -45,8 +45,6 @@
     </ul>
 </nav>
 <!--- END OF NAVIGATION SECTION --->
-
-<p>Dołącz do grona {{ user_profiles_count }} użytkowników i {{ dog_profiles_count }} psiaków i zarejestruj się w Psinder już dziś!</p>
 
 {% block sidebar %}
 {% endblock sidebar %}
