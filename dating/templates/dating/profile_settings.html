@@ -17,6 +17,6 @@
         <li>Kod pocztowy: {{ user.address.post_code }}</li>
         <li>Ulica i numer: {{ user.address.street }}</li>
     </ul>
-    <a href="">Dodaj/zmień adres</a>
+    <a href="{% url "change-address" user.pk %}">Dodaj/zmień adres</a>
     <a href="{% url "change-password" user.pk %}">Zmień hasło</a>
 {% endblock content %}

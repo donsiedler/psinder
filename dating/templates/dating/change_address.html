@@ -1,0 +1,15 @@
+{% extends "dating/dashboard.html" %}
+
+{% block head %}
+    Zmiana adresu
+{% endblock head %}
+
+{% block content %}
+    <h3>Zmień adres</h3>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Zapisz adres</button>
+        <a href="{% url "settings" user.pk %}">Powrót</a>
+    </form>
+{% endblock content %}

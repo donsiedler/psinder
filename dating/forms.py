@@ -3,7 +3,24 @@ from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 
+from .models import Address
+
 User = get_user_model()
+
+FORM_LABELS_PL = {
+    "username": "Nazwa użytkownika",
+    "email": "Adres email",
+    "first_name": "Imię",
+    "last_name": "Nazwisko",
+    "gender": "Płeć",
+    "dob": "Data urodzenia",
+    "bio": "Opis profilu",
+    "photo": "Zdjęcie profilowe",
+    "phone": "Numer telefonu",
+    "street": "Ulica",
+    "city": "Miasto",
+    "post_code": "Kod pocztowy",
+}
 
 
 class UserCreateForm(forms.ModelForm):
@@ -25,14 +42,7 @@ class UserCreateForm(forms.ModelForm):
             "username": "",
         }
 
-        labels = {
-            "username": "Nazwa użytkownika",
-            "email": "Adres email",
-            "first_name": "Imię",
-            "last_name": "Nazwisko",
-            "gender": "Płeć",
-            "dob": "Data urodzenia",
-        }
+        labels = FORM_LABELS_PL
 
     def clean(self):
         cd = super().clean()
@@ -71,17 +81,7 @@ class UserProfileSettingsForm(forms.ModelForm):
             "photo",
             "phone",
         ]
-
-        labels = {
-            "email": "Adres email",
-            "first_name": "Imię",
-            "last_name": "Nazwisko",
-            "gender": "Płeć",
-            "dob": "Data urodzenia",
-            "bio": "Opis profilu",
-            "photo": "Zdjęcie profilowe",
-            "phone": "Numer telefonu",
-        }
+        labels = FORM_LABELS_PL
 
 
 class UserChangePasswordForm(forms.Form):
@@ -94,3 +94,10 @@ class UserChangePasswordForm(forms.Form):
         new_password2 = cd.get("new_password2")
         if new_password != new_password2:
             raise ValidationError("Hasła nie są jednakowe!")
+
+
+class UserAddressForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = ["street", "city", "post_code"]
+        labels = FORM_LABELS_PL

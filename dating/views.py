@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import FormView, UpdateView
 
-from .forms import UserCreateForm, UserLoginForm, UserProfileSettingsForm, UserChangePasswordForm
+from .forms import UserCreateForm, UserLoginForm, UserProfileSettingsForm, UserChangePasswordForm, UserAddressForm
 from dogs.models import Dog
 
 User = get_user_model()
@@ -100,3 +100,11 @@ class UserChangePasswordView(LoginRequiredMixin, View):
             user.save()
             return redirect("settings", user.pk)
         return render(request, "dating/change_password.html", context={"form": form})
+
+
+class UserChangeAddressView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        user_pk = kwargs.get("pk")
+        user = User.objects.get(pk=user_pk)
+        form = UserAddressForm(instance=user.address)
+        return render(request, "dating/change_address.html", context={"form": form})
