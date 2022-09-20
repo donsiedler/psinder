@@ -6,6 +6,7 @@ from django.views import View
 from django.views.generic import FormView, UpdateView
 
 from .forms import UserCreateForm, UserLoginForm, UserProfileSettingsForm, UserChangePasswordForm, UserAddressForm
+from .models import Address
 from dogs.models import Dog
 
 User = get_user_model()
@@ -107,4 +108,29 @@ class UserChangeAddressView(LoginRequiredMixin, View):
         user_pk = kwargs.get("pk")
         user = User.objects.get(pk=user_pk)
         form = UserAddressForm(instance=user.address)
+        return render(request, "dating/change_address.html", context={"form": form})
+
+    def post(self, request, *args, **kwargs):
+        form = UserAddressForm(request.POST)
+        if form.is_valid():
+            user_pk = kwargs.get("pk")
+            user = User.objects.get(pk=user_pk)
+
+            cd = form.cleaned_data
+            street = cd.get("street")
+            city = cd.get("city")
+            post_code = cd.get("post_code")
+
+            address = Address.objects.filter(street=street, city=city, post_code=post_code)
+
+            if not address:  # Create a new address if it doesn't exist in the database
+                address = Address.objects.create(street=street, city=city, post_code=post_code)
+                user.address = address
+                user.save()
+
+            if user.address != address.first():  # Update user's address if it already exists in the database
+                user.address = address.first()
+                user.save()
+
+            return redirect("settings", user.pk)
         return render(request, "dating/change_address.html", context={"form": form})
