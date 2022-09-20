@@ -218,3 +218,4 @@ local_settings.py
 
 
 # End of https://www.gitignore.io/api/python,pycharm
+/dating/media/user_image/*
