@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, DetailView
 
 from .models import Dog
 
@@ -26,3 +26,9 @@ class DogsListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Dog.objects.filter(owner=self.request.user)
+
+
+class DogDetailView(LoginRequiredMixin, DetailView):
+    model = Dog
+    template_name = "dogs/profile.html"
+    context_object_name = "dog"

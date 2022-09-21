@@ -1,0 +1,16 @@
+{% extends "dating/dashboard.html" %}
+
+{% block head %}
+    {{ dog.name }}
+{% endblock head %}
+
+{% block content %}
+    <img src="{{ dog.photo.url }}" width="200" alt="Zdjęcie profilowe">
+    <h3>{{ dog.name }}</h3>
+    <p>Wiek: {{ dog.age }}</p>
+    <p>Płeć: {{ dog.sex }}</p>
+    <p>Rasa: {{ dog.breed }}</p>
+    <p>Wielkość psa: {{ dog.size }}</p>
+    <p>Opis: {{ dog.bio }}</p>
+    <a href="">Edytuj</a>
+{% endblock content %}
