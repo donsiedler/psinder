@@ -1,0 +1,21 @@
+{% extends "dating/dashboard.html" %}
+
+{% block head %}
+    Moje psy
+{% endblock head %}
+
+{% block content %}
+    <h3>Moje psiaki</h3>
+    <ul>
+        {% for dog in dogs %}
+            <li>
+                <a href="">{{ dog.name }}</a>
+            </li>
+        {% empty %}
+            <li>
+                Nie dodano żadnych piesków :(
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url "add-dog" %}">Dodaj psiaka</a>
+{% endblock content %}

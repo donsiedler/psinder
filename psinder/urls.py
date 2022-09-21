@@ -35,5 +35,6 @@ urlpatterns = [
     path('settings/<int:pk>/change_address/', dating.UserChangeAddressView.as_view(), name="change-address"),
     # Dogs
     path('add_dog/', dogs.DogAddView.as_view(), name="add-dog"),
+    path('dogs/', dogs.DogsListView.as_view(), name="dogs"),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + \
               static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
