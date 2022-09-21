@@ -13,8 +13,10 @@ class DogAddView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("dashboard")
 
     def form_valid(self, form):
-        response = super().form_valid(form)
+        self.object = form.save(commit=False)
         self.object.owner = self.request.user
         self.object.save()
-        return response
+        return super().form_valid(form)
+
+
 
