@@ -19,9 +19,11 @@ from django.contrib import admin
 from django.urls import path
 
 from dating import views as dating
+from dogs import views as dogs
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # Dating
     path('', dating.MainPageView.as_view(), name="home-page"),
     path('about/', dating.AboutAppView.as_view(), name="about-app"),
     path('register/', dating.UserCreateView.as_view(), name="register"),
@@ -31,5 +33,7 @@ urlpatterns = [
     path('settings/<int:pk>/', dating.UserSettingsView.as_view(), name="settings"),
     path('settings/<int:pk>/change_password/', dating.UserChangePasswordView.as_view(), name="change-password"),
     path('settings/<int:pk>/change_address/', dating.UserChangeAddressView.as_view(), name="change-address"),
+    # Dogs
+    path('add_dog/', dogs.DogAddView.as_view(), name="add-dog"),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + \
               static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

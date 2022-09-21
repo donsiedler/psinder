@@ -1,0 +1,13 @@
+{% extends "dating/dashboard.html" %}
+
+{% block head %}
+    Dodaj psa
+{% endblock head %}
+
+{% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Dodaj psa</button>
+    </form>
+{% endblock content %}
