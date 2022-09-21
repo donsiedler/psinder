@@ -11,12 +11,13 @@ class Dog(models.Model):
         (3, "giant"),  # >40 kg
     )
 
-    name = models.CharField(max_length=32)
-    age = models.PositiveSmallIntegerField()
-    sex = models.PositiveSmallIntegerField(choices=User.GENDERS)
-    breed = models.CharField(max_length=64)
-    size = models.PositiveSmallIntegerField(choices=SIZES)
-    bio = models.TextField(null=True)
-    photo = models.ImageField(upload_to="dogs/static_files/uploads/",
-                              default="dogs/static_files/default_avatar.png")
+    name = models.CharField(max_length=32, verbose_name="Imię")
+    age = models.PositiveSmallIntegerField(verbose_name="Wiek")
+    sex = models.PositiveSmallIntegerField(choices=User.GENDERS, verbose_name="Płeć")
+    breed = models.CharField(max_length=64, verbose_name="Rasa")
+    size = models.PositiveSmallIntegerField(choices=SIZES, verbose_name="Wielkość psa")
+    bio = models.TextField(null=True, verbose_name="Opis")
+    photo = models.ImageField(upload_to="dog_image",
+                              default="default_avatar.png",
+                              verbose_name="Zdjęcie psa")
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
