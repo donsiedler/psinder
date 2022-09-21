@@ -9,7 +9,7 @@
     <ul>
         {% for dog in dogs %}
             <li>
-                <a href="">{{ dog.name }}</a>
+                <a href="{% url "dog-profile" dog.pk %}">{{ dog.name }}</a>
             </li>
         {% empty %}
             <li>
