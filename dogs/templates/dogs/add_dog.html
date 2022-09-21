@@ -5,6 +5,7 @@
 {% endblock head %}
 
 {% block content %}
+    <h3>Dodaj psa</h3>
     <form action="" method="POST">
         {% csrf_token %}
         {{ form.as_p }}
