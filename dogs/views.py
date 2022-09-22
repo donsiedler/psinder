@@ -1,8 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, DetailView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView
 
+from .forms import DogProfileSettingsForm
 from .models import Dog
 
 
@@ -32,3 +33,12 @@ class DogDetailView(LoginRequiredMixin, DetailView):
     model = Dog
     template_name = "dogs/profile.html"
     context_object_name = "dog"
+
+
+class DogProfileUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = "dogs/profile_settings.html"
+    model = Dog
+    form_class = DogProfileSettingsForm
+    success_url = reverse_lazy("dogs")
+    context_object_name = "dog"
+

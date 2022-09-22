@@ -37,5 +37,6 @@ urlpatterns = [
     path('add_dog/', dogs.DogAddView.as_view(), name="add-dog"),
     path('dogs/', dogs.DogsListView.as_view(), name="dogs"),
     path('dog_profile/<int:pk>/', dogs.DogDetailView.as_view(), name="dog-profile"),
+    path('dog_profile/<int:pk>/edit/', dogs.DogProfileUpdateView.as_view(), name="edit-dog-profile"),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + \
               static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

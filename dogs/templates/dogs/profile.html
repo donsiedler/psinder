@@ -12,5 +12,6 @@
     <p>Rasa: {{ dog.breed }}</p>
     <p>Wielkość psa: {{ dog.size }}</p>
     <p>Opis: {{ dog.bio }}</p>
-    <a href="">Edytuj</a>
+    <a href="{% url "edit-dog-profile" dog.pk %}">Edytuj</a>
+    <a href="{% url "dogs" %}">Powrót</a>
 {% endblock content %}
