@@ -6,10 +6,12 @@
 {% endblock head %}
 
 {% block content %}
-    <img src="{{ user.photo.url }}" width="200" alt="Zdjęcie profilowe">
-    <h3>{{ user.username }}</h3>
-    <p>{{ user.first_name }} {{ user.last_name }}</p>
-    <p>Użytkownik od: {{ user.date_joined }}</p>
-    <h3>Nadchodzące spotkania</h3>
-    <h3>Nadchodząca opieka</h3>
+    <div class="container">
+        <img src="{{ user.photo.url }}" width="200" alt="Zdjęcie profilowe">
+        <h3>{{ user.username }}</h3>
+        <p>{{ user.first_name }} {{ user.last_name }}</p>
+        <p>Użytkownik od: {{ user.date_joined }}</p>
+        <h3>Nadchodzące spotkania</h3>
+        <h3>Nadchodząca opieka</h3>
+    </div>
 {% endblock content %}
