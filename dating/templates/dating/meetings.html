@@ -1,0 +1,21 @@
+{% extends "dating/dashboard.html" %}
+
+{% block head %}
+    Spotkania
+{% endblock head %}
+
+{% block content %}
+    <h3>Moje Spotkania</h3>
+    <ul>
+        {% for meeting in meetings %}
+            <li>
+                {{ meeting.date_time }}
+            </li>
+        {% empty %}
+            <li>
+                Nie masz jeszcze żadnych spotkań :(
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="">Dodaj spotkanie</a>
+{% endblock content %}

@@ -3,10 +3,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import FormView, UpdateView
+from django.views.generic import FormView, UpdateView, CreateView, ListView
 
 from .forms import UserCreateForm, UserLoginForm, UserProfileSettingsForm, UserChangePasswordForm, UserAddressForm
-from .models import Address
+from .models import Address, Meeting
 from dogs.models import Dog
 
 User = get_user_model()
@@ -134,3 +134,18 @@ class UserChangeAddressView(LoginRequiredMixin, View):
 
             return redirect("settings", user.pk)
         return render(request, "dating/change_address.html", context={"form": form})
+
+
+class MeetingListView(ListView):
+    model = Meeting
+    template_name = "dating/meetings.html"
+    context_object_name = "meetings"
+
+    def get_queryset(self):
+        return Meeting.objects.filter(participating_users=self.request.user)
+
+
+class MeetingCreateView(CreateView):
+    model = Meeting
+    fields = ["date_time", "max_users", "max_dogs", "target_user_gender", "target_user_age", "notes", "address"]
+    success_url = ""
