@@ -1,6 +1,6 @@
 from django.db import models
 
-from dating.models import User
+from dating.models import User, GENDERS
 
 
 class Dog(models.Model):
@@ -13,7 +13,7 @@ class Dog(models.Model):
 
     name = models.CharField(max_length=32, verbose_name="Imię")
     age = models.PositiveSmallIntegerField(verbose_name="Wiek")
-    sex = models.PositiveSmallIntegerField(choices=User.GENDERS, verbose_name="Płeć")
+    sex = models.PositiveSmallIntegerField(choices=GENDERS, verbose_name="Płeć")
     breed = models.CharField(max_length=64, verbose_name="Rasa")
     size = models.PositiveSmallIntegerField(choices=SIZES, verbose_name="Wielkość psa")
     bio = models.TextField(null=True, verbose_name="Opis")

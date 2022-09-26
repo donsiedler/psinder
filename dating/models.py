@@ -11,12 +11,13 @@ class Address(models.Model):
         return f"{self.post_code}, {self.city}, {self.street}"
 
 
-class User(AbstractUser):
-    GENDERS = (
-        (0, "female"),
-        (1, "male")
-    )
+GENDERS = (
+    (0, "female"),
+    (1, "male")
+)
 
+
+class User(AbstractUser):
     gender = models.PositiveSmallIntegerField(choices=GENDERS, verbose_name="Płeć")
     dob = models.DateField(verbose_name="Data urodzenia")
     bio = models.TextField(null=True, blank=True, verbose_name="Twój opis")
@@ -28,3 +29,21 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+from dogs.models import Dog
+
+
+class Meeting(models.Model):
+    date_time = models.DateTimeField()
+    max_users = models.PositiveSmallIntegerField()
+    max_dogs = models.PositiveSmallIntegerField()
+    target_user_gender = models.PositiveSmallIntegerField(choices=GENDERS, null=True, blank=True)
+    target_user_age = models.PositiveSmallIntegerField(null=True, blank=True)
+    target_dog_sex = models.PositiveSmallIntegerField(choices=GENDERS, null=True, blank=True)
+    target_dog_age = models.PositiveSmallIntegerField(null=True, blank=True)
+    address = models.ForeignKey(Address, on_delete=models.DO_NOTHING)
+    notes = models.TextField(null=True, blank=True)
+    date_time_created = models.DateTimeField(auto_now_add=True)
+    participating_dogs = models.ManyToManyField(Dog)
+    participating_users = models.ManyToManyField(User)
