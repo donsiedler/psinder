@@ -1,0 +1,14 @@
+{% extends "dating/dashboard.html" %}
+
+{% block head %}
+    Nowe spotkanie
+{% endblock head %}
+
+{% block content %}
+    <h3>Nowe spotkanie</h3>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Dodaj spotkanie</button>
+    </form>
+{% endblock content %}

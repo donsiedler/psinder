@@ -148,4 +148,5 @@ class MeetingListView(ListView):
 class MeetingCreateView(CreateView):
     model = Meeting
     fields = ["date_time", "max_users", "max_dogs", "target_user_gender", "target_user_age", "notes", "address"]
-    success_url = ""
+    template_name = "dating/create_meeting.html"
+    success_url = reverse_lazy("meetings")

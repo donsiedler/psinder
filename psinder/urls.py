@@ -34,6 +34,7 @@ urlpatterns = [
     path('settings/<int:pk>/change_password/', dating.UserChangePasswordView.as_view(), name="change-password"),
     path('settings/<int:pk>/change_address/', dating.UserChangeAddressView.as_view(), name="change-address"),
     path('meetings/', dating.MeetingListView.as_view(), name="meetings"),
+    path('add_meeting/', dating.MeetingCreateView.as_view(), name="add-meeting"),
     # Dogs
     path('add_dog/', dogs.DogAddView.as_view(), name="add-dog"),
     path('dogs/', dogs.DogsListView.as_view(), name="dogs"),
