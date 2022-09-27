@@ -1,7 +1,5 @@
 from django.db import models
 
-from dating.models import User, GENDERS
-
 
 class Dog(models.Model):
     SIZES = (
@@ -9,6 +7,11 @@ class Dog(models.Model):
         (1, "medium"),  # <20 kg
         (2, "large"),  # <40 kg
         (3, "giant"),  # >40 kg
+    )
+
+    GENDERS = (
+        (0, "female"),
+        (1, "male")
     )
 
     name = models.CharField(max_length=32, verbose_name="Imię")
@@ -20,4 +23,4 @@ class Dog(models.Model):
     photo = models.ImageField(upload_to="dog_image",
                               default="default_avatar.png",
                               verbose_name="Zdjęcie psa")
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey("dating.User", on_delete=models.CASCADE)

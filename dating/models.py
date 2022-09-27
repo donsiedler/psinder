@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from dogs.models import Dog
 
 
 class Address(models.Model):
@@ -29,9 +30,6 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
-
-
-from dogs.models import Dog
 
 
 class Meeting(models.Model):
