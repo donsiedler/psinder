@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import FormView, UpdateView, CreateView, ListView
 
-from .forms import UserCreateForm, UserLoginForm, UserProfileSettingsForm, UserChangePasswordForm, UserAddressForm
+from .forms import UserCreateForm, UserLoginForm, UserProfileSettingsForm, UserChangePasswordForm, UserAddressForm, MeetingAddForm
 from .models import Address, Meeting
 from dogs.models import Dog
 
@@ -145,8 +145,39 @@ class MeetingListView(ListView):
         return Meeting.objects.filter(participating_users=self.request.user)
 
 
-class MeetingCreateView(CreateView):
-    model = Meeting
-    fields = ["date_time", "max_users", "max_dogs", "target_user_gender", "target_user_age", "notes", "address"]
+class MeetingAddView(LoginRequiredMixin, FormView):
+    form_class = MeetingAddForm
     template_name = "dating/create_meeting.html"
     success_url = reverse_lazy("meetings")
+
+    def form_valid(self, form):
+        User = get_user_model()
+        user = User.objects.get(pk=self.request.user.pk)
+        cd = form.cleaned_data
+        date = cd.get("date")
+        time = cd.get("time")
+        max_users = cd.get("max_users")
+        max_dogs = cd.get("max_dogs")
+        target_user_gender = cd.get("target_user_gender")
+        target_user_age = cd.get("target_user_age")
+        target_dog_sex = cd.get("target_dog_sex")
+        target_dog_age = cd.get("target_dog_age")
+        address = cd.get("address")
+        notes = cd.get("notes")
+        participating_dogs = cd.get("participating_dogs")
+
+        meeting = Meeting.objects.create(
+            date=date,
+            time=time,
+            max_users=max_users,
+            max_dogs=max_dogs,
+            target_user_gender=target_user_gender,
+            target_user_age=target_user_age,
+            target_dog_sex=target_dog_sex,
+            target_dog_age=target_dog_age,
+            address=address,
+            notes=notes,
+        )
+        meeting.participating_dogs.set(participating_dogs)
+        meeting.participating_users.add(user)
+        return super().form_valid(form)

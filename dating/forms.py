@@ -4,7 +4,8 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 
-from .models import Address
+from dogs.models import Dog
+from .models import Address, Meeting
 
 User = get_user_model()
 
@@ -106,3 +107,21 @@ class UserAddressForm(forms.ModelForm):
         model = Address
         fields = ["street", "city", "post_code"]
         labels = FORM_LABELS_PL
+
+
+class MeetingAddForm(forms.ModelForm):
+    class Meta:
+        model = Meeting
+        fields = [
+            "date",
+            "time",
+            "max_users",
+            "max_dogs",
+            "target_user_gender",
+            "target_user_age",
+            "target_dog_sex",
+            "target_dog_age",
+            "notes",
+            "address",
+            "participating_dogs",
+        ]

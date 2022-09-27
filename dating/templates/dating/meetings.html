@@ -8,8 +8,12 @@
     <h3>Moje Spotkania</h3>
     <ul>
         {% for meeting in meetings %}
-            <li>
-                {{ meeting.date_time }}
+            <li>{{ meeting.date }} {{ meeting.time }}
+                <ul>
+                    <li>Gdzie: {{ meeting.address }}</li>
+                    <li>Pieski: {{ meeting.participating_dogs.all|join:", " }}</li>
+                    <li>Użytkownicy: {{ meeting.participating_users.all|join:", " }}</li>
+                </ul>
             </li>
         {% empty %}
             <li>

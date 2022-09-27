@@ -33,7 +33,8 @@ class User(AbstractUser):
 
 
 class Meeting(models.Model):
-    date_time = models.DateTimeField()
+    date = models.DateField()
+    time = models.TimeField()
     max_users = models.PositiveSmallIntegerField()
     max_dogs = models.PositiveSmallIntegerField()
     target_user_gender = models.PositiveSmallIntegerField(choices=GENDERS, null=True, blank=True)
@@ -43,5 +44,5 @@ class Meeting(models.Model):
     address = models.ForeignKey(Address, on_delete=models.DO_NOTHING)
     notes = models.TextField(null=True, blank=True)
     date_time_created = models.DateTimeField(auto_now_add=True)
-    participating_dogs = models.ManyToManyField(Dog)
-    participating_users = models.ManyToManyField(User)
+    participating_dogs = models.ManyToManyField(Dog, related_name="dogs")
+    participating_users = models.ManyToManyField(User, related_name="users")

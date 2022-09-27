@@ -24,3 +24,6 @@ class Dog(models.Model):
                               default="default_avatar.png",
                               verbose_name="Zdjęcie psa")
     owner = models.ForeignKey("dating.User", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.name} ({self.breed})"
