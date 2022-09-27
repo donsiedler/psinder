@@ -11,7 +11,7 @@ class DogAddView(LoginRequiredMixin, CreateView):
     template_name = "dogs/add_dog.html"
     model = Dog
     fields = ["name", "age", "sex", "breed", "size", "bio", "photo"]
-    success_url = reverse_lazy("dashboard")
+    success_url = reverse_lazy("dogs")
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
