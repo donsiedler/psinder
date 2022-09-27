@@ -22,6 +22,17 @@ FORM_LABELS_PL = {
     "street": "Ulica",
     "city": "Miasto",
     "post_code": "Kod pocztowy",
+    "date": "Data",
+    "time": "Godzina",
+    "max_users": "Maks użytkowników",
+    "max_dogs": "Maks psów",
+    "target_user_gender": "Płeć użytkownika",
+    "target_user_age": "Wiek użytkownika",
+    "target_dog_sex": "Płeć psa",
+    "target_dog_age": "Wiek psa",
+    "notes": "Dodatkowe informacje",
+    "address": "Adres",
+    "participating_dogs": "Moje psy",
 }
 
 POST_CODE_VALIDATOR_PL = RegexValidator('^\d{2}-\d{3}$', message="Nieprawidłowy kod pocztowy")
@@ -125,3 +136,4 @@ class MeetingAddForm(forms.ModelForm):
             "address",
             "participating_dogs",
         ]
+        labels = FORM_LABELS_PL
