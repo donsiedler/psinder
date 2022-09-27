@@ -156,8 +156,6 @@ class MeetingAddView(LoginRequiredMixin, FormView):
         return modelform
 
     def form_valid(self, form):
-        # User = get_user_model()
-        # user = User.objects.get(pk=self.request.user.pk)
         cd = form.cleaned_data
         date = cd.get("date")
         time = cd.get("time")
