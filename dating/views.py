@@ -150,9 +150,14 @@ class MeetingAddView(LoginRequiredMixin, FormView):
     template_name = "dating/create_meeting.html"
     success_url = reverse_lazy("meetings")
 
+    def get_form_class(self):
+        modelform = super().get_form_class()
+        modelform.base_fields["participating_dogs"].limit_choices_to = {"owner": self.request.user}
+        return modelform
+
     def form_valid(self, form):
-        User = get_user_model()
-        user = User.objects.get(pk=self.request.user.pk)
+        # User = get_user_model()
+        # user = User.objects.get(pk=self.request.user.pk)
         cd = form.cleaned_data
         date = cd.get("date")
         time = cd.get("time")
@@ -179,5 +184,5 @@ class MeetingAddView(LoginRequiredMixin, FormView):
             notes=notes,
         )
         meeting.participating_dogs.set(participating_dogs)
-        meeting.participating_users.add(user)
+        meeting.participating_users.add(self.request.user)
         return super().form_valid(form)
