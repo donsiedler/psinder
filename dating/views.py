@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model, authenticate, login, logout
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
@@ -79,7 +79,13 @@ class UserDashboardView(LoginRequiredMixin, View):
         return render(request, "dating/dashboard.html")
 
 
-class UserSettingsView(LoginRequiredMixin, UpdateView):
+class UserSettingsView(LoginRequiredMixin,  UpdateView):
+    def dispatch(self, request, *args, **kwargs):
+        # Prevents the user from viewing and editing other profiles
+        if not request.user.is_authenticated or request.user.pk != kwargs["pk"]:
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
+
     template_name = "dating/profile_settings.html"
     model = User
     form_class = UserProfileSettingsForm
@@ -87,6 +93,12 @@ class UserSettingsView(LoginRequiredMixin, UpdateView):
 
 
 class UserChangePasswordView(LoginRequiredMixin, View):
+    def dispatch(self, request, *args, **kwargs):
+        # Prevents the user from changing other users passwords
+        if not request.user.is_authenticated or request.user.pk != kwargs["pk"]:
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
         form = UserChangePasswordForm()
         return render(request, "dating/change_password.html", context={"form": form})
@@ -104,6 +116,12 @@ class UserChangePasswordView(LoginRequiredMixin, View):
 
 
 class UserChangeAddressView(LoginRequiredMixin, View):
+    def dispatch(self, request, *args, **kwargs):
+        # Prevents the user from changing other users addresses
+        if not request.user.is_authenticated or request.user.pk != kwargs["pk"]:
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
         user_pk = kwargs.get("pk")
         user = User.objects.get(pk=user_pk)
