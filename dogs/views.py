@@ -37,8 +37,9 @@ class DogDetailView(LoginRequiredMixin, DetailView):
 
 class DogProfileUpdateView(LoginRequiredMixin, UpdateView):
     def dispatch(self, request, *args, **kwargs):
+        user_dogs = request.user.dog_set.all()
         # Prevents the user from editing other users dog profiles
-        if not request.user.is_authenticated or kwargs["pk"] not in request.user.dog_set.all():
+        if not request.user.is_authenticated or not user_dogs.filter(pk=kwargs["pk"]):
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
 
