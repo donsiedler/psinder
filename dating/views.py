@@ -5,7 +5,8 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import FormView, UpdateView, CreateView, ListView
 
-from .forms import UserCreateForm, UserLoginForm, UserProfileSettingsForm, UserChangePasswordForm, UserAddressForm, MeetingAddForm
+from .forms import UserCreateForm, UserLoginForm, UserProfileSettingsForm, UserChangePasswordForm, UserAddressForm, \
+    MeetingAddForm
 from .models import Address, Meeting
 from dogs.models import Dog
 
@@ -79,7 +80,7 @@ class UserDashboardView(LoginRequiredMixin, View):
         return render(request, "dating/dashboard.html")
 
 
-class UserSettingsView(LoginRequiredMixin,  UpdateView):
+class UserSettingsView(LoginRequiredMixin, UpdateView):
     def dispatch(self, request, *args, **kwargs):
         # Prevents the user from viewing and editing other profiles
         if not request.user.is_authenticated or request.user.pk != kwargs["pk"]:
@@ -175,6 +176,9 @@ class MeetingAddView(LoginRequiredMixin, FormView):
 
     def form_valid(self, form):
         cd = form.cleaned_data
+
+        # Meeting form data
+
         date = cd.get("date")
         time = cd.get("time")
         max_users = cd.get("max_users")
@@ -183,9 +187,19 @@ class MeetingAddView(LoginRequiredMixin, FormView):
         target_user_age = cd.get("target_user_age")
         target_dog_sex = cd.get("target_dog_sex")
         target_dog_age = cd.get("target_dog_age")
-        address = cd.get("address")
         notes = cd.get("notes")
         participating_dogs = cd.get("participating_dogs")
+
+        # Address form data
+        street = cd.get("street")
+        city = cd.get("city")
+        post_code = cd.get("post_code")
+
+        # Search the database if address already exists
+        address = Address.objects.get(street=street, city=city, post_code=post_code)
+
+        if not address:  # Create a new address if it doesn't exist in the database
+            address = Address.objects.create(street=street, city=city, post_code=post_code)
 
         meeting = Meeting.objects.create(
             date=date,
