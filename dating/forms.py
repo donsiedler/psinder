@@ -121,6 +121,10 @@ class UserAddressForm(forms.ModelForm):
 
 
 class MeetingAddForm(forms.ModelForm):
+    street = forms.CharField(min_length=3, max_length=64, required=False, label="Ulica")
+    city = forms.CharField(min_length=2, max_length=30, required=True, label="Miasto")
+    post_code = forms.CharField(max_length=6, validators=[POST_CODE_VALIDATOR_PL], label="Kod pocztowy", required=False)
+
     class Meta:
         model = Meeting
         fields = [
@@ -133,7 +137,6 @@ class MeetingAddForm(forms.ModelForm):
             "target_dog_sex",
             "target_dog_age",
             "notes",
-            "address",
             "participating_dogs",
         ]
         labels = FORM_LABELS_PL
