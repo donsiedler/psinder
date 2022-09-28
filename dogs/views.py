@@ -36,6 +36,12 @@ class DogDetailView(LoginRequiredMixin, DetailView):
 
 
 class DogProfileUpdateView(LoginRequiredMixin, UpdateView):
+    def dispatch(self, request, *args, **kwargs):
+        # Prevents the user from editing other users dog profiles
+        if not request.user.is_authenticated or kwargs["pk"] not in request.user.dog_set.all():
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
+
     template_name = "dogs/profile_settings.html"
     model = Dog
     form_class = DogProfileSettingsForm
