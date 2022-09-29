@@ -226,3 +226,21 @@ class MeetingDetailsView(LoginRequiredMixin, DetailView):
     context_object_name = "meeting"
     model = Meeting
     template_name = "dating/meeting_details.html"
+
+
+class MeetingUpdateView(LoginRequiredMixin, UpdateView):
+    def dispatch(self, request, *args, **kwargs):
+        # Prevents the user from editing meetings they didn't create
+        user_meetings = Meeting.objects.filter(created_by=self.request.user)
+        if not request.user.is_authenticated or not user_meetings.filter(pk=kwargs["pk"]):
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
+
+    context_object_name = "meeting"
+    model = Meeting
+    template_name = "dating/edit_meeting.html"
+    form_class = MeetingAddForm
+    success_url = reverse_lazy("meetings")
+
+
+

@@ -23,9 +23,10 @@ from dogs import views as dogs
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # Dating
+    # Home page
     path('', dating.MainPageView.as_view(), name="home-page"),
     path('about/', dating.AboutAppView.as_view(), name="about-app"),
+    # Users
     path('register/', dating.UserCreateView.as_view(), name="register"),
     path('login/', dating.UserLoginView.as_view(), name="login"),
     path('logout/', dating.UserLogoutView.as_view(), name="logout"),
@@ -33,9 +34,11 @@ urlpatterns = [
     path('settings/<int:pk>/', dating.UserSettingsView.as_view(), name="settings"),
     path('settings/<int:pk>/change_password/', dating.UserChangePasswordView.as_view(), name="change-password"),
     path('settings/<int:pk>/change_address/', dating.UserChangeAddressView.as_view(), name="change-address"),
+    # Meetings
     path('meetings/', dating.MeetingListView.as_view(), name="meetings"),
     path('add_meeting/', dating.MeetingAddView.as_view(), name="add-meeting"),
     path('meeting/<int:pk>/', dating.MeetingDetailsView.as_view(), name="meeting"),
+    path('meeting/<int:pk>/edit/', dating.MeetingUpdateView.as_view(), name="edit-meeting"),
     # Dogs
     path('add_dog/', dogs.DogAddView.as_view(), name="add-dog"),
     path('dogs/', dogs.DogsListView.as_view(), name="dogs"),

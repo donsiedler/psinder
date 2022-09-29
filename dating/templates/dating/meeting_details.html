@@ -13,6 +13,6 @@
     <p>Liczba piesków: {{ meeting.get_meeting_dogs_count }} / {{ meeting.max_dogs }}</p>
     <p>Pieski: {{ meeting.participating_dogs.all|join:", " }}</p>
     <p>Opis: {{ meeting.notes }}</p>
-    <a href="">Edytuj</a>
+    <a href="{% url "edit-meeting" meeting.pk %}">Edytuj</a>
     <a href="{% url "meetings" %}">Powrót</a>
 {% endblock content %}

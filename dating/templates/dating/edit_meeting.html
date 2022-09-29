@@ -1,0 +1,15 @@
+{% extends "dating/dashboard.html" %}
+
+{% block head %}
+    Edycja spotkania
+{% endblock head %}
+
+{% block content %}
+    <h3>Edycja spotkania</h3>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Zapisz zmiany</button>
+    </form>
+    <a href="{% url "meeting" meeting.pk %}">Powrót</a>
+{% endblock content %}
