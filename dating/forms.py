@@ -41,6 +41,11 @@ POST_CODE_VALIDATOR_PL = RegexValidator('^\d{2}-\d{3}$', message="Nieprawidłowy
 
 
 class UserCreateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.add_input(Submit('submit', "Zarejestruj"))
+
     password1 = forms.CharField(widget=forms.PasswordInput, validators=[validate_password], label="Hasło")
     password2 = forms.CharField(widget=forms.PasswordInput, validators=[validate_password], label="Powtórz hasło")
 
