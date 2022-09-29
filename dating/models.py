@@ -50,3 +50,6 @@ class Meeting(models.Model):
 
     def get_meeting_users_count(self):
         return self.participating_users.count()
+
+    def get_meeting_dogs_count(self):
+        return self.participating_dogs.count()
