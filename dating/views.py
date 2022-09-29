@@ -236,16 +236,24 @@ class MeetingUpdateView(LoginRequiredMixin, UpdateView):
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
 
-    def get_form_class(self):
-        modelform = super().get_form_class()
-        modelform.base_fields["participating_dogs"].limit_choices_to = {"owner": self.request.user}
-        return modelform
-
     context_object_name = "meeting"
     model = Meeting
     template_name = "dating/edit_meeting.html"
     form_class = MeetingAddForm
     success_url = reverse_lazy("meetings")
 
+    def get_form_class(self):
+        modelform = super().get_form_class()
+        modelform.base_fields["participating_dogs"].limit_choices_to = {"owner": self.request.user}
+        return modelform
 
-
+    def get_initial(self):
+        """Return the initial data to use for forms on this view."""
+        # Pass meeting address instance to form
+        meeting_address = {
+            "street": self.object.address.street,
+            "post_code": self.object.address.post_code,
+            "city": self.object.address.city,
+        }
+        self.initial.update(meeting_address)
+        return self.initial.copy()
