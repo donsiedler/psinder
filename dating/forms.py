@@ -4,7 +4,9 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 
-from dogs.models import Dog
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit, Reset
+
 from .models import Address, Meeting
 
 User = get_user_model()
@@ -112,6 +114,11 @@ class UserChangePasswordForm(forms.Form):
 
 
 class UserAddressForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.add_input(Submit('submit', "Zapisz adres"))
+
     post_code = forms.CharField(max_length=6, validators=[POST_CODE_VALIDATOR_PL], label="Kod pocztowy")
 
     class Meta:

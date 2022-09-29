@@ -1,4 +1,5 @@
 {% extends "dating/dashboard.html" %}
+{% load crispy_forms_tags %}
 
 {% block head %}
     Zmiana adresu
@@ -8,8 +9,9 @@
     <h3>Zmień adres</h3>
     <form action="" method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Zapisz adres</button>
-        <a href="{% url "settings" user.pk %}">Powrót</a>
+        {% crispy form %}
+        <a href="{% url "settings" user.pk %}">
+            <button type="button" class="btn btn-secondary">Powrót</button>
+        </a>
     </form>
 {% endblock content %}
