@@ -9,7 +9,7 @@ class Address(models.Model):
     street = models.CharField(max_length=64, null=True)
 
     def __str__(self):
-        return f"{self.post_code}, {self.city}, {self.street}"
+        return f"{self.street} {self.post_code} {self.city}"
 
 
 GENDERS = (
