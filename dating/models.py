@@ -13,8 +13,8 @@ class Address(models.Model):
 
 
 GENDERS = (
-    (0, "female"),
-    (1, "male")
+    (0, "kobieta"),
+    (1, "mężczyzna")
 )
 
 

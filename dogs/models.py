@@ -3,15 +3,15 @@ from django.db import models
 
 class Dog(models.Model):
     SIZES = (
-        (0, "small"),  # <5 kg
-        (1, "medium"),  # <20 kg
-        (2, "large"),  # <40 kg
-        (3, "giant"),  # >40 kg
+        (0, "mały"),  # <5 kg
+        (1, "średni"),  # <20 kg
+        (2, "duży"),  # <40 kg
+        (3, "wielki"),  # >40 kg
     )
 
     GENDERS = (
-        (0, "female"),
-        (1, "male")
+        (0, "suczka"),
+        (1, "pies")
     )
 
     name = models.CharField(max_length=32, verbose_name="Imię")
