@@ -46,3 +46,4 @@ class Meeting(models.Model):
     date_time_created = models.DateTimeField(auto_now_add=True)
     participating_dogs = models.ManyToManyField(Dog, related_name="dogs")
     participating_users = models.ManyToManyField(User, related_name="users")
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
