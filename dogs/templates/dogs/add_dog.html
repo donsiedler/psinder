@@ -1,4 +1,5 @@
 {% extends "dating/dashboard.html" %}
+{% load crispy_forms_tags %}
 
 {% block head %}
     Dodaj psa
@@ -6,9 +7,8 @@
 
 {% block content %}
     <h3>Dodaj psa</h3>
-    <form action="" method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Dodaj psa</button>
-    </form>
+        {% crispy form %}
+    <a href="{% url "dogs" %}">
+        <button type="button" class="btn btn-secondary">Powrót</button>
+    </a>
 {% endblock content %}
