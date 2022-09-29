@@ -5,6 +5,13 @@
 {% endblock head %}
 
 {% block content %}
-    <h3>Spotkanie {{ meeting.date }} {{ meeting.time }}</h3>
-    <p>Spotkanie utworzył użytkownik {{ meeting.participating_users.all }}</p>
+    <h3>{{ meeting.date }} {{ meeting.time }}</h3>
+    <h6>Lokalizacja: {{ meeting.address }}</h6>
+    <p>Spotkanie utworzył użytkownik: {{ meeting.created_by.username }}</p>
+    <p>Liczba uczestników: {{ meeting.get_meeting_users_count }} / {{ meeting.max_users }}</p>
+    <p>Uczestnicy spotkania: {{ meeting.participating_users.all|join:", " }}</p>
+    <p>Liczba piesków: {{ meeting.get_meeting_dogs_count }} / {{ meeting.max_dogs }}</p>
+    <p>Pieski: {{ meeting.participating_dogs.all|join:", " }}</p>
+    <p>Opis: {{ meeting.notes }}</p>
+    <a href="">Edytuj</a>
 {% endblock content %}
