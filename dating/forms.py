@@ -133,6 +133,11 @@ class UserAddressForm(forms.ModelForm):
 
 
 class MeetingAddForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.add_input(Submit('submit', "Dodaj spotkanie"))
+
     street = forms.CharField(min_length=3, max_length=64, required=False, label="Ulica")
     city = forms.CharField(min_length=2, max_length=30, required=True, label="Miasto")
     post_code = forms.CharField(max_length=6, validators=[POST_CODE_VALIDATOR_PL], label="Kod pocztowy", required=False)

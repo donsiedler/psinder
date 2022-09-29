@@ -1,4 +1,5 @@
 {% extends "dating/dashboard.html" %}
+{% load crispy_forms_tags %}
 
 {% block head %}
     Nowe spotkanie
@@ -8,7 +9,9 @@
     <h3>Nowe spotkanie</h3>
     <form action="" method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Dodaj spotkanie</button>
+        {% crispy form %}
+        <a href="{% url "meetings" %}">
+            <button type="button" class="btn btn-secondary">Powrót</button>
+        </a>
     </form>
 {% endblock content %}
