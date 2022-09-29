@@ -102,6 +102,11 @@ class UserProfileSettingsForm(forms.ModelForm):
 
 
 class UserChangePasswordForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.add_input(Submit('submit', "Zapisz hasło"))
+
     new_password = forms.CharField(widget=forms.PasswordInput, validators=[validate_password])
     new_password2 = forms.CharField(widget=forms.PasswordInput, validators=[validate_password])
 
