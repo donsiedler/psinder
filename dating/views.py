@@ -1,10 +1,10 @@
 from django.contrib.auth import get_user_model, authenticate, login, logout
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import FormView, UpdateView, CreateView, ListView, DetailView
+from django.views.generic import FormView, UpdateView, ListView, DetailView
 
 from .forms import UserCreateForm, UserLoginForm, UserProfileSettingsForm, UserChangePasswordForm, UserAddressForm, \
     MeetingAddForm
@@ -141,18 +141,16 @@ class UserChangeAddressView(LoginRequiredMixin, View):
             city = cd.get("city")
             post_code = cd.get("post_code")
 
-            address = Address.objects.filter(street=street, city=city, post_code=post_code)
-
-            if not address:  # Create a new address if it doesn't exist in the database
+            try:
+                address = Address.objects.get(street=street, city=city, post_code=post_code)
+                user.address = address  # Update user's address if it already exists in the database
+                user.save()
+                return redirect("settings", user.pk)
+            except ObjectDoesNotExist:  # Create a new address if it doesn't exist in the database
                 address = Address.objects.create(street=street, city=city, post_code=post_code)
                 user.address = address
                 user.save()
-
-            if user.address != address.first():  # Update user's address if it already exists in the database
-                user.address = address.first()
-                user.save()
-
-            return redirect("settings", user.pk)
+                return redirect("settings", user.pk)
         return render(request, "dating/change_address.html", context={"form": form})
 
 
@@ -162,7 +160,7 @@ class MeetingListView(ListView):
     context_object_name = "meetings"
 
     def get_queryset(self):
-        return Meeting.objects.filter(participating_users=self.request.user)
+        return Meeting.objects.filter(participating_users=self.request.user).order_by("date", "time")
 
 
 class MeetingAddView(LoginRequiredMixin, FormView):
