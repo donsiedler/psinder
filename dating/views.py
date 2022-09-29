@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
@@ -196,9 +197,11 @@ class MeetingAddView(LoginRequiredMixin, FormView):
         post_code = cd.get("post_code")
 
         # Search the database if address already exists
-        address = Address.objects.get(street=street, city=city, post_code=post_code)
+        try:
+            address = Address.objects.get(street=street, city=city, post_code=post_code)
 
-        if not address:  # Create a new address if it doesn't exist in the database
+        # Create a new address if it doesn't exist in the database
+        except ObjectDoesNotExist:
             address = Address.objects.create(street=street, city=city, post_code=post_code)
 
         meeting = Meeting.objects.create(
@@ -212,6 +215,7 @@ class MeetingAddView(LoginRequiredMixin, FormView):
             target_dog_age=target_dog_age,
             address=address,
             notes=notes,
+            created_by=self.request.user,
         )
         meeting.participating_dogs.set(participating_dogs)
         meeting.participating_users.add(self.request.user)
