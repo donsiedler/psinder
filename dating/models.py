@@ -47,3 +47,6 @@ class Meeting(models.Model):
     participating_dogs = models.ManyToManyField(Dog, related_name="dogs")
     participating_users = models.ManyToManyField(User, related_name="users")
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def get_meeting_users_count(self):
+        return self.participating_users.count()
