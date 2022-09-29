@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'dating',
     'dogs',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -135,3 +136,5 @@ except ModuleNotFoundError:
 AUTH_USER_MODEL = 'dating.User'
 
 LOGIN_URL = "/login/"
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
