@@ -236,6 +236,11 @@ class MeetingUpdateView(LoginRequiredMixin, UpdateView):
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
 
+    def get_form_class(self):
+        modelform = super().get_form_class()
+        modelform.base_fields["participating_dogs"].limit_choices_to = {"owner": self.request.user}
+        return modelform
+
     context_object_name = "meeting"
     model = Meeting
     template_name = "dating/edit_meeting.html"
