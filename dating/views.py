@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import FormView, UpdateView, CreateView, ListView
+from django.views.generic import FormView, UpdateView, CreateView, ListView, DetailView
 
 from .forms import UserCreateForm, UserLoginForm, UserProfileSettingsForm, UserChangePasswordForm, UserAddressForm, \
     MeetingAddForm
@@ -216,3 +216,9 @@ class MeetingAddView(LoginRequiredMixin, FormView):
         meeting.participating_dogs.set(participating_dogs)
         meeting.participating_users.add(self.request.user)
         return super().form_valid(form)
+
+
+class MeetingDetailsView(LoginRequiredMixin, DetailView):
+    context_object_name = "meeting"
+    model = Meeting
+    template_name = "dating/meeting_details.html"

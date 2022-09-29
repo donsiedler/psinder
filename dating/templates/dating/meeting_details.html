@@ -1,0 +1,10 @@
+{% extends "dating/dashboard.html" %}
+
+{% block head %}
+    Szczegóły spotkania
+{% endblock head %}
+
+{% block content %}
+    <h3>Spotkanie {{ meeting.date }} {{ meeting.time }}</h3>
+    <p>Spotkanie utworzył użytkownik {{ meeting.participating_users.all }}</p>
+{% endblock content %}

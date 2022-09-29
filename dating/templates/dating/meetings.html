@@ -9,6 +9,7 @@
     <ul>
         {% for meeting in meetings %}
             <li>{{ meeting.date }} {{ meeting.time }}
+                <a href="{% url "meeting" meeting.pk %}">Szczegóły</a>
                 <ul>
                     <li>Gdzie: {{ meeting.address }}</li>
                     <li>Pieski: {{ meeting.participating_dogs.all|join:", " }}</li>
