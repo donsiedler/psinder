@@ -70,6 +70,11 @@ class UserCreateForm(forms.ModelForm):
 
 
 class UserLoginForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.add_input(Submit('submit', "Zaloguj"))
+
     username = forms.CharField(label="Nazwa użytkownika")
     password = forms.CharField(widget=forms.PasswordInput, label="Hasło")
 
