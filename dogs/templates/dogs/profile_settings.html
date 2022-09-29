@@ -1,4 +1,5 @@
 {% extends "dating/dashboard.html" %}
+{% load crispy_forms_tags %}
 
 {% block head %}
     Ustawienia profilu psa
@@ -6,10 +7,8 @@
 
 {% block content %}
     <h3>Ustawienia profilu {{ dog.name }}</h3>
-    <form action="" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Zapisz zmiany</button>
-    </form>
-    <a href="{% url "dog-profile" dog.pk %}">Powrót</a>
+        {% crispy form %}
+    <a href="{% url "dog-profile" dog.pk %}">
+        <button type="button" class="btn btn-secondary">Powrót</button>
+    </a>
 {% endblock content %}

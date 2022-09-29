@@ -36,6 +36,11 @@ class DogCreateForm(forms.ModelForm):
 
 
 class DogProfileSettingsForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.add_input(Submit('submit', "Zapisz zmiany"))
+
     class Meta:
         model = Dog
         fields = [
