@@ -20,7 +20,7 @@
                         <div class="carousel-caption text-start">
                             <h1>Dołącz do społeczności Psinder'a</h1>
                             <p>Poznaj {{ user_profiles_count }} użytkowników w serwisie</p>
-                            <p><a class="btn btn-lg btn-primary" href="#">Zarejestruj się</a></p>
+                            <p><a class="btn btn-lg btn-primary" href="{% url "register" %}">Zarejestruj się</a></p>
                         </div>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                         <div class="carousel-caption">
                             <h1>Kochasz pieski?</h1>
                             <p>Już {{ dog_profiles_count }} psów czeka na spacer</p>
-                            <p><a class="btn btn-lg btn-primary" href="#">Umów się</a></p>
+                            <p><a class="btn btn-lg btn-primary" href="{% url "meetings" %}">Umów się</a></p>
                         </div>
                     </div>
                 </div>
