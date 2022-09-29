@@ -1,4 +1,5 @@
 {% extends "dating/dashboard.html" %}
+{% load crispy_forms_tags %}
 
 {% block head %}
     Edycja spotkania
@@ -8,8 +9,9 @@
     <h3>Edycja spotkania</h3>
     <form action="" method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Zapisz zmiany</button>
+        {% crispy form %}
     </form>
-    <a href="{% url "meeting" meeting.pk %}">Powrót</a>
+    <a href="{% url "meetings" %}">
+        <button type="button" class="btn btn-secondary">Powrót</button>
+    </a>
 {% endblock content %}

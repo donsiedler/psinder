@@ -10,8 +10,8 @@
     <form action="" method="POST">
         {% csrf_token %}
         {% crispy form %}
-        <a href="{% url "meetings" %}">
-            <button type="button" class="btn btn-secondary">Powrót</button>
-        </a>
     </form>
+    <a href="{% url "meetings" %}">
+        <button type="button" class="btn btn-secondary">Powrót</button>
+    </a>
 {% endblock content %}

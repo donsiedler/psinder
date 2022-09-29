@@ -136,7 +136,7 @@ class MeetingAddForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
-        self.helper.add_input(Submit('submit', "Dodaj spotkanie"))
+        self.helper.add_input(Submit('submit', "Zapisz spotkanie"))
 
     street = forms.CharField(min_length=3, max_length=64, required=False, label="Ulica")
     city = forms.CharField(min_length=2, max_length=30, required=True, label="Miasto")
