@@ -1,4 +1,5 @@
 {% extends "dating/dashboard.html" %}
+{% load crispy_forms_tags %}
 
 {% block head %}
     Ustawienia profilu
@@ -8,15 +9,21 @@
     <h3>Ustawienia profilu</h3>
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Zapisz zmiany</button>
+        {% crispy form %}
     </form>
+    <a href="{% url "dashboard" %}">
+        <button type="button" class="btn btn-secondary">Powrót</button>
+    </a>
     <h3>Dane adresowe</h3>
     <ul>
         <li>Miasto: {{ user.address.city }}</li>
         <li>Kod pocztowy: {{ user.address.post_code }}</li>
         <li>Ulica i numer: {{ user.address.street }}</li>
     </ul>
-    <a href="{% url "change-address" user.pk %}">Dodaj/zmień adres</a>
-    <a href="{% url "change-password" user.pk %}">Zmień hasło</a>
+    <a href="{% url "change-address" user.pk %}">
+        <button type="button" class="btn btn-primary">Dodaj/zmień adres</button>
+    </a>
+    <a href="{% url "change-password" user.pk %}">
+        <button type="button" class="btn btn-primary">Zmień hasło</button>
+    </a>
 {% endblock content %}

@@ -88,6 +88,11 @@ class UserLoginForm(forms.Form):
 
 
 class UserProfileSettingsForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.add_input(Submit('submit', "Zapisz zmiany"))
+
     username = forms.CharField(widget=forms.TextInput(attrs={"readonly": "readonly"}), label="Nazwa użytkownika")
 
     class Meta:
