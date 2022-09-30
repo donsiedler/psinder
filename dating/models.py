@@ -27,6 +27,11 @@ class User(AbstractUser):
                               verbose_name="Zdjęcie profilowe")
     phone = models.CharField(max_length=12, null=True, blank=True, verbose_name="Numer telefonu")
     address = models.ForeignKey(Address, on_delete=models.DO_NOTHING, null=True, verbose_name="Adres")
+    slug = models.SlugField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.slug = self.username
 
     def __str__(self):
         return self.username
