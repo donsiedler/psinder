@@ -5,7 +5,7 @@
 {% endblock head %}
 
 {% block content %}
-    <h3>{{ meeting.date }} {{ meeting.time }}</h3>
+    <h3>{{ meeting.date|date:"SHORT_DATE_FORMAT" }} {{ meeting.time|time:"H:i" }}</h3>
     <h6>Lokalizacja: {{ meeting.address }}</h6>
     <p>Spotkanie utworzył użytkownik: {{ meeting.created_by.username }}</p>
     <p>Liczba uczestników: {{ meeting.get_meeting_users_count }} / {{ meeting.max_users }}</p>

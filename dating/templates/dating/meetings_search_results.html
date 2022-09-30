@@ -2,7 +2,7 @@
 {% for meeting in meetings %}
 <div class="card mt-3">
   <div class="card-body">
-    <h4 class="card-title">{{ meeting.date }} {{ meeting.time }}</h4>
+    <h4 class="card-title">{{ meeting.date|date:"SHORT_DATE_FORMAT" }} {{ meeting.time|time:"H:i" }}</h4>
     <p class="card-text">{{ meeting.address }}</p>
     <p class="card-text">Użytkownicy: {{ meeting.get_meeting_users_count }} / {{ meeting.max_users }}</p>
     <p class="card-text">Psy: {{ meeting.get_meeting_dogs_count }} / {{ meeting.max_dogs }}</p>
