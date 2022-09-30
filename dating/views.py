@@ -258,6 +258,13 @@ class MeetingUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class MeetingDeleteView(LoginRequiredMixin, DeleteView):
+    def dispatch(self, request, *args, **kwargs):
+        # Prevents the user from deleting meetings they didn't create
+        user_meetings = Meeting.objects.filter(created_by=self.request.user)
+        if not request.user.is_authenticated or not user_meetings.filter(pk=kwargs["pk"]):
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
+
     model = Meeting
     template_name = "dating/delete_meeting.html"
     success_url = reverse_lazy("meetings")
