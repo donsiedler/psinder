@@ -10,5 +10,7 @@
     {% crispy form %}
     {% if meetings %}
         {% include "dating/meetings_search_results.html" %}
+    {% else %}
+        <h3>Brak spotkań o podanych kryteriach</h3>
     {% endif %}
 {% endblock content %}
