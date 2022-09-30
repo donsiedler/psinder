@@ -8,7 +8,7 @@
     <h3>Moje Spotkania</h3>
         {% for meeting in meetings %}
             <div class="card mt-3">
-                <h5 class="card-header">{{ meeting.date }} {{ meeting.time }}</h5>
+                <h5 class="card-header">{{ meeting.date|date:"SHORT_DATE_FORMAT" }} {{ meeting.time|time:"H:i" }}</h5>
                 <div class="card-body">
                     <h5 class="card-title">{{ meeting.address }}</h5>
                     <p class="card-text">{{ meeting.notes }}</p>
