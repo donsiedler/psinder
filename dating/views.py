@@ -81,6 +81,13 @@ class UserDashboardView(LoginRequiredMixin, View):
         return render(request, "dating/dashboard.html")
 
 
+class UserProfileView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        slug = kwargs.get("slug")
+        user = User.objects.get(slug=slug)
+        return render(request, "dating/user_profile.html", context={"user": user})
+
+
 class UserSettingsView(LoginRequiredMixin, UpdateView):
     def dispatch(self, request, *args, **kwargs):
         # Prevents the user from viewing and editing other profiles
