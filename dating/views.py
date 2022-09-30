@@ -7,7 +7,7 @@ from django.views import View
 from django.views.generic import FormView, UpdateView, ListView, DetailView, DeleteView
 
 from .forms import UserCreateForm, UserLoginForm, UserProfileSettingsForm, UserChangePasswordForm, UserAddressForm, \
-    MeetingAddForm, MeetingSearchForm
+    MeetingAddForm, MeetingSearchForm, MeetingJoinForm
 from .models import Address, Meeting
 from dogs.models import Dog
 
@@ -312,3 +312,26 @@ class MeetingSearchView(LoginRequiredMixin, View):
             }
             return render(request, "dating/meetings_search.html", context)
         return render(request, "dating/meetings_search.html", {"form": form})
+
+
+class MeetingJoinView(LoginRequiredMixin, UpdateView):
+    form_class = MeetingJoinForm
+    model = Meeting
+    template_name = "dating/meeting_join.html"
+    success_url = reverse_lazy("meetings")
+
+    def get_form_class(self):
+        modelform = super().get_form_class()
+        modelform.base_fields["participating_dogs"].limit_choices_to = {"owner": self.request.user}
+        return modelform
+
+    def form_valid(self, form):
+        cd = form.cleaned_data
+        participating_dogs = cd.get("participating_dogs")
+        self.object = form.save(commit=False)
+        self.object.participating_users.add(self.request.user)
+        for dog in participating_dogs:
+            self.object.participating_dogs.add(dog)
+        self.object.save()
+        return super().form_valid(form)
+
