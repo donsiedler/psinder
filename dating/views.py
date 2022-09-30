@@ -7,7 +7,7 @@ from django.views import View
 from django.views.generic import FormView, UpdateView, ListView, DetailView
 
 from .forms import UserCreateForm, UserLoginForm, UserProfileSettingsForm, UserChangePasswordForm, UserAddressForm, \
-    MeetingAddForm
+    MeetingAddForm, MeetingSearchForm
 from .models import Address, Meeting
 from dogs.models import Dog
 
@@ -255,3 +255,12 @@ class MeetingUpdateView(LoginRequiredMixin, UpdateView):
         }
         self.initial.update(meeting_address)
         return self.initial.copy()
+
+
+class MeetingSearchView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        form = MeetingSearchForm()
+        return render(request, "dating/meetings_search.html", {"form": form})
+
+    def post(self, request, *args, **kwargs):
+        pass

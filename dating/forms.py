@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django import forms
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.password_validation import validate_password
@@ -7,7 +9,9 @@ from django.core.validators import RegexValidator
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Reset
 
-from .models import Address, Meeting
+from psinder.settings import DATE_INPUT_FORMATS
+from .models import Address, Meeting, GENDERS
+
 
 User = get_user_model()
 
@@ -172,3 +176,23 @@ class MeetingAddForm(forms.ModelForm):
             "participating_dogs",
         ]
         labels = FORM_LABELS_PL
+
+
+class MeetingSearchForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.add_input(Submit('submit', "Wyszukaj"))
+
+    city = forms.CharField(max_length=30, label="Miasto")
+    date = forms.DateField(widget=forms.DateInput(format=DATE_INPUT_FORMATS, attrs={
+        "type": "date",
+        "min": datetime.now().date(),
+        "value": datetime.now().date(),
+    }), label="Data")
+    target_user_gender = forms.ChoiceField(widget=forms.RadioSelect, choices=GENDERS,
+                                           label="Płeć", help_text="Wybierz płeć osoby, z którą chcesz się spotkać")
+    max_users = forms.IntegerField(widget=forms.NumberInput, label="Maksymalna liczba uczestników", required=False)
+    max_dogs = forms.IntegerField(widget=forms.NumberInput, label="Maksymalna liczba psów", required=False)
+
+
