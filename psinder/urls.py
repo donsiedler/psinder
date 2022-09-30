@@ -31,6 +31,7 @@ urlpatterns = [
     path('login/', dating.UserLoginView.as_view(), name="login"),
     path('logout/', dating.UserLogoutView.as_view(), name="logout"),
     path('dashboard/', dating.UserDashboardView.as_view(), name="dashboard"),
+    path('profile/<str:slug>/', dating.UserProfileView.as_view(), name="user-profile"),
     path('settings/<int:pk>/', dating.UserSettingsView.as_view(), name="settings"),
     path('settings/<int:pk>/change_password/', dating.UserChangePasswordView.as_view(), name="change-password"),
     path('settings/<int:pk>/change_address/', dating.UserChangeAddressView.as_view(), name="change-address"),
