@@ -12,7 +12,6 @@ from crispy_forms.layout import Submit, Reset
 from psinder.settings import DATE_INPUT_FORMATS
 from .models import Address, Meeting, GENDERS
 
-
 User = get_user_model()
 
 FORM_LABELS_PL = {
@@ -102,7 +101,8 @@ class UserProfileSettingsForm(forms.ModelForm):
         self.helper = FormHelper(self)
         self.helper.add_input(Submit('submit', "Zapisz zmiany"))
 
-    username = forms.CharField(widget=forms.TextInput(attrs={"readonly": "readonly"}), label="Nazwa użytkownika")
+    username = forms.CharField(widget=forms.TextInput(attrs={"disabled": "disabled"}), label="Nazwa użytkownika")
+    gender = forms.ChoiceField(widget=forms.RadioSelect, choices=GENDERS, label="Płeć")
 
     class Meta:
         model = User
