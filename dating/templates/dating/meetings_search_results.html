@@ -12,7 +12,7 @@
       {% endif %}
 
     <a href="{% url "meeting" meeting.pk %}" class="card-link">Szczegóły spotkania</a>
-    <a href="" class="card-link">Profil użytkownika</a>
+    <a href="{% url "user-profile" meeting.created_by.slug %}" class="card-link">Profil użytkownika</a>
   </div>
 </div>
 {% endfor %}
