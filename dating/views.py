@@ -271,6 +271,24 @@ class MeetingSearchView(LoginRequiredMixin, View):
             target_user_gender = cd.get("target_user_gender")
             max_users = cd.get("max_users")
             max_dogs = cd.get("max_dogs")
-            return HttpResponse("ok")
-        return render(request, "dating/meetings_search.html", {"form": form})
 
+            # Mandatory fields search results
+            meetings = Meeting.objects.filter(address__city__icontains=city,
+                                              date__gte=date,
+                                              created_by__gender=target_user_gender
+                                              ).order_by("date", "time")
+            # Additional fields filters
+            if max_users and max_dogs:
+                meetings = meetings.filter(max_users__lte=max_users, max_dogs__lte=max_dogs).order_by(
+                    "-max_users", "-max_dogs")
+            elif max_users:
+                meetings = meetings.filter(max_users__lte=max_users).order_by("-max_users")
+            elif max_dogs:
+                meetings = meetings.filter(max_dogs__lte=max_dogs).order_by("-max_dogs")
+
+            context = {
+                "form": form,
+                "meetings": meetings,
+            }
+            return render(request, "dating/meetings_search.html", context)
+        return render(request, "dating/meetings_search.html", {"form": form})

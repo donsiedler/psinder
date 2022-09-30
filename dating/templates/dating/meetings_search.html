@@ -8,4 +8,7 @@
 {% block content %}
     <h3>Wyszukaj spotkania</h3>
     {% crispy form %}
+    {% if meetings %}
+        {% include "dating/meetings_search_results.html" %}
+    {% endif %}
 {% endblock content %}

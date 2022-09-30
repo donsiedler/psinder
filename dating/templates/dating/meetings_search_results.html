@@ -1,0 +1,18 @@
+<h3 id="search-results">Znaleziono {{ meetings.count }} spotkań: </h3>
+{% for meeting in meetings %}
+<div class="card mt-3">
+  <div class="card-body">
+    <h4 class="card-title">{{ meeting.date }} {{ meeting.time }}</h4>
+    <p class="card-text">{{ meeting.address }}</p>
+    <p class="card-text">Użytkownicy: {{ meeting.get_meeting_users_count }} / {{ meeting.max_users }}</p>
+    <p class="card-text">Psy: {{ meeting.get_meeting_dogs_count }} / {{ meeting.max_dogs }}</p>
+
+      {% if meeting.notes %}
+        <p class="text-muted">{{ meeting.notes }}</p>
+      {% endif %}
+
+    <a href="{% url "meeting" meeting.pk %}" class="card-link">Szczegóły spotkania</a>
+    <a href="" class="card-link">Profil użytkownika</a>
+  </div>
+</div>
+{% endfor %}
