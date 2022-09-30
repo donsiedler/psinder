@@ -1,0 +1,12 @@
+{% extends "dating/dashboard.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <p>Czy na pewno chcesz dołączyć do spotkania?</p>
+
+    {% crispy form %}
+
+    <a href="{% url "meeting" meeting.pk %}">
+        <button type="button" class="btn btn-secondary">Powrót</button>
+    </a>
+{% endblock content %}

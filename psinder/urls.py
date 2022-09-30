@@ -41,6 +41,7 @@ urlpatterns = [
     path('meeting/<int:pk>/', dating.MeetingDetailsView.as_view(), name="meeting"),
     path('meeting/<int:pk>/edit/', dating.MeetingUpdateView.as_view(), name="edit-meeting"),
     path('meeting/<int:pk>/delete/', dating.MeetingDeleteView.as_view(), name="delete-meeting"),
+    path('meeting/<int:pk>/join/', dating.MeetingJoinView.as_view(), name="join-meeting"),
     path('meetings/search/', dating.MeetingSearchView.as_view(), name="search-meetings"),
     # Dogs
     path('add_dog/', dogs.DogAddView.as_view(), name="add-dog"),

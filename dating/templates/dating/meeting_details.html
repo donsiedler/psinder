@@ -15,7 +15,7 @@
     <p>Opis: {{ meeting.notes }}</p>
 
     {% if user != meeting.created_by and meeting.get_meeting_users_count < meeting.max_users %}
-        <a href="">
+        <a href="{% url "join-meeting" meeting.pk %}">
             <button type="button" class="btn btn-primary">Dołącz</button>
         </a>
     {% endif %}

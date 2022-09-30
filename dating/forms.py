@@ -198,3 +198,33 @@ class MeetingSearchForm(forms.Form):
     max_dogs = forms.IntegerField(widget=forms.NumberInput, label="Maksymalna liczba psów", required=False,
                                   validators=[MinValueValidator(0), MaxValueValidator(10)],
                                   help_text="Podaj wartość w zakresie od 0 do 10")
+
+
+class MeetingJoinForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.add_input(Submit('submit', "Dołącz"))
+
+    def clean(self):
+        cd = super().clean()
+        participating_dogs = cd.get("participating_dogs")
+        max_dogs = cd.get("max_dogs")
+        if participating_dogs.count() > max_dogs:
+            raise ValidationError(f"Nie możesz zabrać tylu psów! Maksymalna liczba psów na spotkaniu to {max_dogs}")
+
+    class Meta:
+        model = Meeting
+        fields = ["participating_dogs", "max_dogs", "max_users"]
+
+        widgets = {
+            "participating_dogs": forms.CheckboxSelectMultiple,
+            "max_dogs": forms.HiddenInput,
+            "max_users": forms.HiddenInput,
+        }
+
+        labels = FORM_LABELS_PL
+
+        help_texts = {
+            "participating_dogs": "Wybierz psy, które zabierzesz ze sobą"
+        }
