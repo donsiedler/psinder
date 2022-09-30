@@ -36,6 +36,12 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+    def get_user_dogs(self):
+        return Dog.objects.filter(owner=self)
+
+    def get_user_meetings(self):
+        return Meeting.objects.filter(participating_users=self)
+
 
 class Meeting(models.Model):
     date = models.DateField()
