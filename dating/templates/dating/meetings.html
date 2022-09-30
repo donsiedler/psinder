@@ -6,22 +6,22 @@
 
 {% block content %}
     <h3>Moje Spotkania</h3>
-    <ul>
         {% for meeting in meetings %}
-            <li>{{ meeting.date }} {{ meeting.time }}
-                <a href="{% url "meeting" meeting.pk %}">Szczegóły</a>
-                <ul>
-                    <li>Gdzie: {{ meeting.address }}</li>
-                    <li>Pieski: {{ meeting.participating_dogs.all|join:", " }}</li>
-                    <li>Użytkownicy: {{ meeting.participating_users.all|join:", " }}</li>
-                </ul>
-            </li>
+            <div class="card mt-3">
+                <h5 class="card-header">{{ meeting.date }} {{ meeting.time }}</h5>
+                <div class="card-body">
+                    <h5 class="card-title">{{ meeting.address }}</h5>
+                    <p class="card-text">{{ meeting.notes }}</p>
+                    <p class="card-text">Spotkanie z: {{ meeting.participating_users.all|join:", " }}</p>
+                    <p class="card-text">Pieski: {{ meeting.participating_dogs.all|join:", " }}</p>
+                    <a href="{% url "meeting" meeting.pk %}" class="btn btn-primary">Szczegóły</a>
+                </div>
+            </div>
         {% empty %}
             <li>
                 Nie masz jeszcze żadnych spotkań :(
             </li>
         {% endfor %}
-    </ul>
     <a href="{% url "add-meeting" %}">Dodaj spotkanie</a>
     <a href="{% url "search-meetings" %}">Wyszukaj spotkanie</a>
 {% endblock content %}
