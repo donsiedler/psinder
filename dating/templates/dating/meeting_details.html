@@ -14,12 +14,14 @@
     <p>Pieski: {{ meeting.participating_dogs.all|join:", " }}</p>
     <p>Opis: {{ meeting.notes }}</p>
 
+    {% if user == meeting.created_by %}
     <a href="{% url "edit-meeting" meeting.pk %}">
         <button type="button" class="btn btn-info">Edytuj</button>
     </a>
     <a href="{% url "delete-meeting" meeting.pk %}">
         <button type="button" class="btn btn-danger">Usuń</button>
     </a>
+    {% endif %}
     <a href="{% url "meetings" %}">
         <button type="button" class="btn btn-secondary">Powrót</button>
     </a>
