@@ -4,7 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.shortcuts import render, redirect, HttpResponse
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import FormView, UpdateView, ListView, DetailView
+from django.views.generic import FormView, UpdateView, ListView, DetailView, DeleteView
 
 from .forms import UserCreateForm, UserLoginForm, UserProfileSettingsForm, UserChangePasswordForm, UserAddressForm, \
     MeetingAddForm, MeetingSearchForm
@@ -255,6 +255,12 @@ class MeetingUpdateView(LoginRequiredMixin, UpdateView):
         }
         self.initial.update(meeting_address)
         return self.initial.copy()
+
+
+class MeetingDeleteView(LoginRequiredMixin, DeleteView):
+    model = Meeting
+    template_name = "dating/delete_meeting.html"
+    success_url = reverse_lazy("meetings")
 
 
 class MeetingSearchView(LoginRequiredMixin, View):

@@ -1,0 +1,12 @@
+{% extends "dating/dashboard.html" %}
+
+{% block content %}
+<form action="" method="POST">
+    {% csrf_token %}
+    <p>Czy na pewno chcesz usunąć to spotkanie?</p>
+    <button type="submit" class="btn btn-danger">Tak, usuń</button>
+    <a href="{% url "meeting" meeting.pk %}">
+        <button type="button" class="btn btn-secondary">Powrót</button>
+    </a>
+</form>
+{% endblock content %}
