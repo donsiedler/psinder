@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render, redirect
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.shortcuts import render, redirect, HttpResponse
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import FormView, UpdateView, ListView, DetailView
@@ -263,4 +263,14 @@ class MeetingSearchView(LoginRequiredMixin, View):
         return render(request, "dating/meetings_search.html", {"form": form})
 
     def post(self, request, *args, **kwargs):
-        pass
+        form = MeetingSearchForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            city = cd.get("city")
+            date = cd.get("date")
+            target_user_gender = cd.get("target_user_gender")
+            max_users = cd.get("max_users")
+            max_dogs = cd.get("max_dogs")
+            return HttpResponse("ok")
+        return render(request, "dating/meetings_search.html", {"form": form})
+

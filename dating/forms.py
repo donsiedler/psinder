@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Reset
@@ -192,7 +192,9 @@ class MeetingSearchForm(forms.Form):
     }), label="Data")
     target_user_gender = forms.ChoiceField(widget=forms.RadioSelect, choices=GENDERS,
                                            label="Płeć", help_text="Wybierz płeć osoby, z którą chcesz się spotkać")
-    max_users = forms.IntegerField(widget=forms.NumberInput, label="Maksymalna liczba uczestników", required=False)
-    max_dogs = forms.IntegerField(widget=forms.NumberInput, label="Maksymalna liczba psów", required=False)
-
-
+    max_users = forms.IntegerField(widget=forms.NumberInput, label="Maksymalna liczba uczestników", required=False,
+                                   validators=[MinValueValidator(2), MaxValueValidator(10)],
+                                   help_text="Podaj wartość w zakresie od 2 do 10")
+    max_dogs = forms.IntegerField(widget=forms.NumberInput, label="Maksymalna liczba psów", required=False,
+                                  validators=[MinValueValidator(0), MaxValueValidator(10)],
+                                  help_text="Podaj wartość w zakresie od 0 do 10")
