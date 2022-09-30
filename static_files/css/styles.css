@@ -8,6 +8,14 @@ body footer {
   color: #5a5a5a;
 }
 
+.btn-psinder, .btn-psinder:active, .btn-psinder:visited {
+    background-color: #F77A43 !important;
+    color: white!important;
+}
+
+.btn-psinder:hover {
+  background-color: #FD5863 !important;
+}
 
 /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
