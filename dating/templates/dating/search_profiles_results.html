@@ -1,0 +1,92 @@
+{% if user_profiles %}
+    <h3 id="search-results">Znaleziono {{ user_profiles.count }} profili użytkowników: </h3>
+    {% for profile in user_profiles %}
+    <div class="row d-flex justify-content-auto align-items-center h-100">
+      <div class="col col-md-9 col-lg-7 col-xl-5">
+        <div class="card mt-3" style="border-radius: 15px;">
+          <div class="card-body p-4">
+            <div class="d-flex text-black">
+              <div class="flex-shrink-0">
+                <img src="{{profile.photo.url}}"
+                  alt="Zdjęcie profilowe" class="img-fluid"
+                  style="width: 180px; border-radius: 10px;">
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h5 class="mb-1">{{ profile.username }}</h5>
+                {% if profile.first_name and profile.last_name %}
+                  <p class="mb-2 pb-1" style="color: #2b2a2a;">{{ profile.first_name }} {{ profile.last_name }}</p>
+                {% endif %}
+                <p class="mb-2 pb-1" style="color: #2b2a2a;">Użytkownik od {{ profile.date_joined|date:"SHORT_DATE_FORMAT" }}</p>
+                <div class="d-flex justify-content-start rounded-3 p-2 mb-2"
+                  style="background-color: #efefef;">
+                  <div>
+                    <p class="small text-muted mb-1">Pieski</p>
+                    <p class="mb-0">{{ profile.get_user_dogs.count }}</p>
+                  </div>
+                  <div class="px-3">
+                    <p class="small text-muted mb-1">Spotkania</p>
+                    <p class="mb-0">{{ profile.get_user_meetings.count }}</p>
+                  </div>
+                </div>
+                <div class="d-flex pt-1">
+                  <button type="button" class="btn btn-outline-primary me-1 flex-grow-1">Wiadomość</button>
+                  <a href="{% url "user-profile" profile.slug %}">
+                    <button type="button" class="btn btn-primary flex-grow-1">Wyświetl profil</button>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+{% endif %}
+
+{% if dog_profiles %}
+    <h3 id="search-results">Znaleziono {{ dog_profiles.count }} profili psów: </h3>
+    {% for profile in dog_profiles %}
+    <div class="row d-flex justify-content-auto align-items-center h-100">
+      <div class="col col-md-9 col-lg-7 col-xl-5">
+        <div class="card mt-3" style="border-radius: 15px;">
+          <div class="card-body p-4">
+            <div class="d-flex text-black">
+              <div class="flex-shrink-0">
+                <img src="{{profile.photo.url}}"
+                  alt="Zdjęcie profilowe" class="img-fluid"
+                  style="width: 180px; border-radius: 10px;">
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h5 class="mb-1">{{ profile.name }}</h5>
+                <p class="mb-2 pb-1" style="color: #2b2a2a;">Pies użytkownika {{ profile.owner.username }}</p>
+                <div class="d-flex justify-content-start rounded-3 p-2 mb-2"
+                  style="background-color: #efefef;">
+                  <div>
+                    <p class="small text-muted mb-1">Płeć</p>
+                    <p class="mb-0">{{ profile.get_sex_display }}</p>
+                  </div>
+                  <div class="px-3">
+                    <p class="small text-muted mb-1">Wiek</p>
+                    <p class="mb-0">{{ profile.age }}</p>
+                  </div>
+                  <div class="px-3">
+                    <p class="small text-muted mb-1">Rasa</p>
+                    <p class="mb-0">{{ profile.breed }}</p>
+                  </div>
+                </div>
+                <div class="d-flex pt-1">
+                  <a href="{% url "user-profile" profile.owner.slug %}">
+                    <button type="button" class="btn btn-outline-primary me-1 flex-grow-1">Profil właściciela</button>
+                  </a>
+                  <a href="{% url "dog-profile" profile.pk %}">
+                    <button type="button" class="btn btn-primary flex-grow-1">Profil pieska</button>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+{% endif  %}

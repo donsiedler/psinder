@@ -7,7 +7,7 @@ from django.views import View
 from django.views.generic import FormView, UpdateView, ListView, DetailView, DeleteView
 
 from .forms import UserCreateForm, UserLoginForm, UserProfileSettingsForm, UserChangePasswordForm, UserAddressForm, \
-    MeetingAddForm, MeetingSearchForm, MeetingJoinForm
+    MeetingAddForm, MeetingSearchForm, MeetingJoinForm, SearchProfilesForm
 from .models import Address, Meeting
 from dogs.models import Dog
 
@@ -335,3 +335,34 @@ class MeetingJoinView(LoginRequiredMixin, UpdateView):
         self.object.save()
         return super().form_valid(form)
 
+
+class SearchProfilesView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        form = SearchProfilesForm()
+        return render(request, "dating/search_profiles.html", {"form": form})
+
+    def post(self, request, *args, **kwargs):
+        form = SearchProfilesForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            query = cd.get("query")
+
+            # Search for users
+            usernames = User.objects.filter(username__icontains=query)
+            first_names = User.objects.filter(first_name__icontains=query)
+            last_names = User.objects.filter(last_name__icontains=query)
+            user_profiles = usernames | first_names | last_names
+
+            # Search for dogs
+            dog_names = Dog.objects.filter(name__icontains=query)
+            dog_breeds = Dog.objects.filter(breed__icontains=query)
+            dog_profiles = dog_names | dog_breeds
+
+            context = {
+                "form": form,
+                "user_profiles": user_profiles,
+                "dog_profiles": dog_profiles,
+            }
+
+            return render(request, "dating/search_profiles.html", context)
+        return render(request, "dating/search_profiles.html", {"form": form})

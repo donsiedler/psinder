@@ -228,3 +228,12 @@ class MeetingJoinForm(forms.ModelForm):
         help_texts = {
             "participating_dogs": "Wybierz psy, które zabierzesz ze sobą"
         }
+
+
+class SearchProfilesForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.add_input(Submit('submit', "Szukaj"))
+
+    query = forms.CharField(widget=forms.TextInput, label="Szukaj", help_text="Szukaj profili użytkowników i piesków")

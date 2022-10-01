@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+    Szukaj profili
+{% endblock head %}
+
+{% block content %}
+
+{% crispy form %}
+{% if user_profiles or dog_profiles %}
+    {% include "dating/search_profiles_results.html" %}
+{% else %}
+    <h3>Nie znaleziono profili</h3>
+{% endif %}
+{% endblock content %}
