@@ -20,6 +20,7 @@ from django.urls import path
 
 from dating import views as dating
 from dogs import views as dogs
+from user_messages import views as messages
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -36,6 +37,9 @@ urlpatterns = [
     path('settings/<int:pk>/', dating.UserSettingsView.as_view(), name="settings"),
     path('settings/<int:pk>/change_password/', dating.UserChangePasswordView.as_view(), name="change-password"),
     path('settings/<int:pk>/change_address/', dating.UserChangeAddressView.as_view(), name="change-address"),
+    # Messages
+    path('inbox/', messages.ThreadsList.as_view(), name="inbox"),
+    path('inbox/create_thread/', messages.ThreadCreate.as_view(), name="create-thread"),
     # Meetings
     path('meetings/', dating.MeetingListView.as_view(), name="meetings"),
     path('add_meeting/', dating.MeetingAddView.as_view(), name="add-meeting"),
