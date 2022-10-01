@@ -54,3 +54,19 @@ class ThreadView(View):
             "message_list": message_list,
         }
         return render(request, "user_messages/thread.html", context)
+
+
+class MessageCreate(View):
+    def post(self, request, pk, *args, **kwargs):
+        thread = Thread.objects.get(pk=pk)
+        if thread.recipient == request.user:
+            recipient = thread.sender
+        else:
+            recipient = thread.recipient
+        message = Message.objects.create(
+            thread=thread,
+            sender_user=request.user,
+            recipient_user=recipient,
+            content=request.POST.get("message")
+        )
+        return redirect("thread", pk)
