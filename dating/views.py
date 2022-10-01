@@ -84,8 +84,8 @@ class UserDashboardView(LoginRequiredMixin, View):
 class UserProfileView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         slug = kwargs.get("slug")
-        user = User.objects.get(slug=slug)
-        return render(request, "dating/user_profile.html", context={"user": user})
+        user_profile = User.objects.get(slug=slug)
+        return render(request, "dating/user_profile.html", context={"user_profile": user_profile})
 
 
 class UserSettingsView(LoginRequiredMixin, UpdateView):
