@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+    Konwersacja
+{% endblock head %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="card col-md-12 mt-5p-3 shadow-sm">
+            {% if thread.recipient == request.user %}
+                <h5>@{{ thread.sender }}</h5>
+            {% else %}
+                <h5>@{{ thread.recipient }}</h5>
+            {% endif %}
+        </div>
+    </div>
+
+    {% for message in message_list %}
+        <div class="row">
+            <div class="col-md-12 my-1">
+                {% if message.sender_user == request.user %}
+                    <div class="sent-message my-3">
+                        <p>{{ message.content }}</p>
+                    </div>
+                {% elif message.recipient_user == request.user %}
+                    <div class="received-message my-3">
+                        <p>{{ message.content }}</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+    {% empty %}
+        <div class="row my-5">
+            <div class="col-md-12">
+                <p class="empty-text">Brak wiadomości do wyświetlenia</p>
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="row">
+        <div class="card col-md-12 p-3 shadow-sm">
+            <form method="POST" action="{% url "create-message" thread.pk %}">
+                {% csrf_token %}
+                {% crispy form %}
+                <div class="d-grid gap-2 mt-3">
+                    <button class="btn btn-light" type="submit">Wyślij</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}
