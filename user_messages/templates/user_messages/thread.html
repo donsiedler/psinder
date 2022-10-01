@@ -10,9 +10,9 @@
     <div class="row">
         <div class="card col-md-12 mt-5p-3 shadow-sm">
             {% if thread.recipient == request.user %}
-                <h5>@{{ thread.sender }}</h5>
+                <h5>Konwersacja z {{ thread.sender }}</h5>
             {% else %}
-                <h5>@{{ thread.recipient }}</h5>
+                <h5>Konwersacja z {{ thread.recipient }}</h5>
             {% endif %}
         </div>
     </div>
@@ -44,9 +44,8 @@
         <div class="card col-md-12 p-3 shadow-sm">
             <form method="POST" action="{% url "create-message" thread.pk %}">
                 {% csrf_token %}
-                {% crispy form %}
                 <div class="d-grid gap-2 mt-3">
-                    <button class="btn btn-light" type="submit">Wyślij</button>
+                    {% crispy form %}
                 </div>
             </form>
         </div>
