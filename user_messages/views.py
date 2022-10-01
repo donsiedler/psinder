@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.shortcuts import render, redirect
@@ -40,6 +41,7 @@ class ThreadCreate(View):
                 thread = Thread.objects.create(sender=request.user, recipient=recipient)
                 return redirect("thread", pk=thread.pk)
             except ObjectDoesNotExist:
+                messages.error(request, f"Nie znaleziono użytkownika {username}")
                 return redirect("create-thread")
 
 

@@ -21,6 +21,13 @@
         <div class="col-md-5 col-sm-12">
             <form method="POST">
                 {% csrf_token %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
                 <p>Podaj nazwę użytkownika, żeby rozpocząć rozmowę</p>
                 {{ form | crispy }}
                 <div class="d-grid gap-2">
