@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block head %}
+    Centrum wiadomości
+{% endblock head %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 p-5">
+            <h3>Centrum wiadomości</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 p-5">
+            <form method="GET" action="{% url "create-thread" %}">
+                <button class="btn btn-light p-3" type="submit">Nowa konwersacja</button>
+            </form>
+        </div>
+    </div>
+
+{% for thread in threads.all %}
+    <div class="row mb-3">
+        <div class="card col-md-12 p-5 shadow-sm">
+            <h5>{{ thread.sender }} - {{ thread.recipient }}</h5>
+            <a class="stretched-link" href="{% url "thread" thread.pk %}"></a>
+        </div>
+    </div>
+{% endfor %}
+{% endblock content %}
