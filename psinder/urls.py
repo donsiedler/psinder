@@ -41,6 +41,7 @@ urlpatterns = [
     path('inbox/', messages.ThreadsList.as_view(), name="inbox"),
     path('inbox/create_thread/', messages.ThreadCreate.as_view(), name="create-thread"),
     path('inbox/<int:pk>/', messages.ThreadView.as_view(), name="thread"),
+    path('inbox/<int:pk>/create_message/', messages.MessageCreate.as_view(), name="create-message"),
     # Meetings
     path('meetings/', dating.MeetingListView.as_view(), name="meetings"),
     path('add_meeting/', dating.MeetingAddView.as_view(), name="add-meeting"),
