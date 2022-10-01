@@ -11,6 +11,7 @@ body footer {
 .btn-psinder, .btn-psinder:active, .btn-psinder:visited {
     background-color: #F77A43 !important;
     color: white!important;
+    border-color: #F77A43 !important;
 }
 
 .btn-psinder:hover {
@@ -110,10 +111,15 @@ body footer {
 }
 
 .received-message {
-  background-color: rgb(1, 196, 255);
+  background-color: #ef4756;
   color: #fff;
   border-radius: 30px;
   padding: 10px 25px;
   width: 25%;
   float: left;
+}
+
+.message-time-stamp {
+  font-size: 0.75rem;
+  float: right;
 }

@@ -9,24 +9,32 @@
 
     <div class="row">
         <div class="card col-md-12 mt-5p-3 shadow-sm">
-            {% if thread.recipient == request.user %}
-                <h5>Konwersacja z {{ thread.sender }}</h5>
-            {% else %}
-                <h5>Konwersacja z {{ thread.recipient }}</h5>
-            {% endif %}
+            <div class="col-md-9">
+                {% if thread.recipient == request.user %}
+                    <h5 class="card-title">Konwersacja z {{ thread.sender }}</h5>
+                {% else %}
+                    <h5>Konwersacja z {{ thread.recipient }}</h5>
+                {% endif %}
+            </div>
+            <div class="col-md-3 my-1">
+                <a class="btn btn-light" href="{% url "inbox" %}">Powrót</a>
+            </div>
         </div>
+
     </div>
 
     {% for message in message_list %}
         <div class="row">
             <div class="col-md-12 my-1">
                 {% if message.sender_user == request.user %}
-                    <div class="sent-message my-3">
+                    <div class="sent-message my-1">
                         <p>{{ message.content }}</p>
+                        <p class="message-time-stamp">{{ message.date|timesince}}</p>
                     </div>
                 {% elif message.recipient_user == request.user %}
-                    <div class="received-message my-3">
+                    <div class="received-message my-1">
                         <p>{{ message.content }}</p>
+                        <p class="message-time-stamp">{{ message.date|timesince}}</p>
                     </div>
                 {% endif %}
             </div>
