@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'dating',
     'dogs',
     'crispy_forms',
-    'messages',
+    'user_messages'
 ]
 
 MIDDLEWARE = [
