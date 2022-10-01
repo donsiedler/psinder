@@ -210,7 +210,9 @@ class MeetingJoinForm(forms.ModelForm):
         cd = super().clean()
         participating_dogs = cd.get("participating_dogs")
         max_dogs = cd.get("max_dogs")
-        if participating_dogs.count() > max_dogs:
+        if participating_dogs is None:
+            return
+        if len(self.initial["participating_dogs"]) + len(participating_dogs) > max_dogs:
             raise ValidationError(f"Nie możesz zabrać tylu psów! Maksymalna liczba psów na spotkaniu to {max_dogs}")
 
     class Meta:

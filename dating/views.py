@@ -315,6 +315,13 @@ class MeetingSearchView(LoginRequiredMixin, View):
 
 
 class MeetingJoinView(LoginRequiredMixin, UpdateView):
+    def dispatch(self, request, *args, **kwargs):
+        # Prevents the user from joining the meetings they created
+        meeting_creator = Meeting.objects.get(pk=kwargs["pk"]).created_by
+        if not request.user.is_authenticated or request.user == meeting_creator:
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
+
     form_class = MeetingJoinForm
     model = Meeting
     template_name = "dating/meeting_join.html"
@@ -326,14 +333,11 @@ class MeetingJoinView(LoginRequiredMixin, UpdateView):
         return modelform
 
     def form_valid(self, form):
-        cd = form.cleaned_data
-        participating_dogs = cd.get("participating_dogs")
-        self.object = form.save(commit=False)
+        meeting_creator_dogs = list(self.object.participating_dogs.filter(owner=self.object.created_by))
+        response = super().form_valid(form)
         self.object.participating_users.add(self.request.user)
-        for dog in participating_dogs:
-            self.object.participating_dogs.add(dog)
-        self.object.save()
-        return super().form_valid(form)
+        [self.object.participating_dogs.add(dog) for dog in meeting_creator_dogs]
+        return response
 
 
 class SearchProfilesView(LoginRequiredMixin, View):
