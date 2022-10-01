@@ -220,3 +220,4 @@ local_settings.py
 # End of https://www.gitignore.io/api/python,pycharm
 media/user_image/*
 media/dog_image/*
+users/*
