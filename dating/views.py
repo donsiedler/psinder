@@ -252,6 +252,12 @@ class MeetingUpdateView(LoginRequiredMixin, UpdateView):
         modelform.base_fields["participating_dogs"].limit_choices_to = {"owner": self.request.user}
         return modelform
 
+    def form_valid(self, form):
+        other_users_dogs = list(self.object.participating_dogs.all().exclude(owner=self.request.user))
+        response = super().form_valid(form)
+        [self.object.participating_dogs.add(dog) for dog in other_users_dogs]
+        return response
+
     def get_initial(self):
         """Return the initial data to use for forms on this view."""
         # Pass meeting address instance to form
