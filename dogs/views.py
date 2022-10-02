@@ -1,5 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView, UpdateView
 
@@ -35,13 +34,11 @@ class DogDetailView(LoginRequiredMixin, DetailView):
     context_object_name = "dog"
 
 
-class DogProfileUpdateView(LoginRequiredMixin, UpdateView):
-    def dispatch(self, request, *args, **kwargs):
-        user_dogs = request.user.dog_set.all()
+class DogProfileUpdateView(UserPassesTestMixin, UpdateView):
+    def test_func(self):
         # Prevents the user from editing other users dog profiles
-        if not request.user.is_authenticated or not user_dogs.filter(pk=kwargs["pk"]):
-            return self.handle_no_permission()
-        return super().dispatch(request, *args, **kwargs)
+        dog_owner = Dog.objects.get(pk=self.kwargs["pk"]).owner
+        return self.request.user.is_authenticated and self.request.user == dog_owner
 
     template_name = "dogs/profile_settings.html"
     model = Dog

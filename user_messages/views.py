@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib import messages
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.shortcuts import render, redirect
@@ -45,7 +46,14 @@ class ThreadCreate(View):
                 return redirect("create-thread")
 
 
-class ThreadView(View):
+class ThreadView(UserPassesTestMixin, View):
+    def test_func(self):
+        # Prevents the user from viewing other users threads
+        thread = Thread.objects.get(pk=self.kwargs["pk"])
+        return self.request.user.is_authenticated and\
+               self.request.user == thread.sender or\
+               self.request.user == thread.recipient
+
     def get(self, request, pk, *args, **kwargs):
         form = MessageForm()
         thread = Thread.objects.get(pk=pk)
