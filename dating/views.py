@@ -33,7 +33,7 @@ class AboutAppView(View):
 class UserCreateView(FormView):
     form_class = UserCreateForm
     template_name = "dating/register.html"
-    success_url = reverse_lazy("home-page")
+    success_url = reverse_lazy("dashboard")
 
     def form_valid(self, form):
         cd = form.cleaned_data
@@ -53,6 +53,8 @@ class UserCreateView(FormView):
             gender=gender,
             dob=dob
         )
+        user = authenticate(username=username, password=password)
+        login(self.request, user)
         return super().form_valid(form)
 
 

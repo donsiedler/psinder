@@ -25,11 +25,12 @@ data = {
 
 
 @pytest.mark.django_db
-def test_user_registration_form_creates_user(client):
+def test_user_registration_form_creates_user_and_redirects_to_dashboard(client):
     response = client.post("/register/", data)
     assert response.status_code == 302
     assert User.objects.all().count() == 1
     assert User.objects.filter(username="test_user").exists()
+    assert response.url == "/dashboard/"
 
 
 @pytest.mark.django_db
