@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model, authenticate, login, logout
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
-from django.shortcuts import render, redirect, HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import FormView, UpdateView, ListView, DetailView, DeleteView
@@ -88,12 +88,10 @@ class UserProfileView(LoginRequiredMixin, View):
         return render(request, "dating/user_profile.html", context={"user_profile": user_profile})
 
 
-class UserSettingsView(LoginRequiredMixin, UpdateView):
-    def dispatch(self, request, *args, **kwargs):
+class UserSettingsView(UserPassesTestMixin, UpdateView):
+    def test_func(self):
         # Prevents the user from viewing and editing other profiles
-        if not request.user.is_authenticated or request.user.pk != kwargs["pk"]:
-            return self.handle_no_permission()
-        return super().dispatch(request, *args, **kwargs)
+        return self.request.user.is_authenticated and self.request.user.pk == self.kwargs["pk"]
 
     template_name = "dating/profile_settings.html"
     model = User
@@ -101,12 +99,10 @@ class UserSettingsView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("dashboard")
 
 
-class UserChangePasswordView(LoginRequiredMixin, View):
-    def dispatch(self, request, *args, **kwargs):
+class UserChangePasswordView(UserPassesTestMixin, View):
+    def test_func(self):
         # Prevents the user from changing other users passwords
-        if not request.user.is_authenticated or request.user.pk != kwargs["pk"]:
-            return self.handle_no_permission()
-        return super().dispatch(request, *args, **kwargs)
+        return self.request.user.is_authenticated and self.request.user.pk == self.kwargs["pk"]
 
     def get(self, request, *args, **kwargs):
         form = UserChangePasswordForm()
@@ -124,12 +120,10 @@ class UserChangePasswordView(LoginRequiredMixin, View):
         return render(request, "dating/change_password.html", context={"form": form})
 
 
-class UserChangeAddressView(LoginRequiredMixin, View):
-    def dispatch(self, request, *args, **kwargs):
+class UserChangeAddressView(UserPassesTestMixin, View):
+    def test_func(self):
         # Prevents the user from changing other users addresses
-        if not request.user.is_authenticated or request.user.pk != kwargs["pk"]:
-            return self.handle_no_permission()
-        return super().dispatch(request, *args, **kwargs)
+        return self.request.user.is_authenticated and self.request.user.pk == self.kwargs["pk"]
 
     def get(self, request, *args, **kwargs):
         user_pk = kwargs.get("pk")
@@ -184,7 +178,6 @@ class MeetingAddView(LoginRequiredMixin, FormView):
         cd = form.cleaned_data
 
         # Meeting form data
-
         date = cd.get("date")
         time = cd.get("time")
         max_users = cd.get("max_users")
@@ -233,13 +226,11 @@ class MeetingDetailsView(LoginRequiredMixin, DetailView):
     template_name = "dating/meeting_details.html"
 
 
-class MeetingUpdateView(LoginRequiredMixin, UpdateView):
-    def dispatch(self, request, *args, **kwargs):
+class MeetingUpdateView(UserPassesTestMixin, UpdateView):
+    def test_func(self):
         # Prevents the user from editing meetings they didn't create
-        user_meetings = Meeting.objects.filter(created_by=self.request.user)
-        if not request.user.is_authenticated or not user_meetings.filter(pk=kwargs["pk"]):
-            return self.handle_no_permission()
-        return super().dispatch(request, *args, **kwargs)
+        meeting_creator = Meeting.objects.get(pk=self.kwargs["pk"]).created_by
+        return self.request.user.is_authenticated and self.request.user == meeting_creator
 
     context_object_name = "meeting"
     model = Meeting
@@ -270,13 +261,11 @@ class MeetingUpdateView(LoginRequiredMixin, UpdateView):
         return self.initial.copy()
 
 
-class MeetingDeleteView(LoginRequiredMixin, DeleteView):
-    def dispatch(self, request, *args, **kwargs):
+class MeetingDeleteView(UserPassesTestMixin, DeleteView):
+    def test_func(self):
         # Prevents the user from deleting meetings they didn't create
-        user_meetings = Meeting.objects.filter(created_by=self.request.user)
-        if not request.user.is_authenticated or not user_meetings.filter(pk=kwargs["pk"]):
-            return self.handle_no_permission()
-        return super().dispatch(request, *args, **kwargs)
+        meeting_creator = Meeting.objects.get(pk=self.kwargs["pk"]).created_by
+        return self.request.user.is_authenticated and self.request.user == meeting_creator
 
     model = Meeting
     template_name = "dating/delete_meeting.html"
@@ -320,13 +309,11 @@ class MeetingSearchView(LoginRequiredMixin, View):
         return render(request, "dating/meetings_search.html", {"form": form})
 
 
-class MeetingJoinView(LoginRequiredMixin, UpdateView):
-    def dispatch(self, request, *args, **kwargs):
+class MeetingJoinView(UserPassesTestMixin, UpdateView):
+    def test_func(self):
         # Prevents the user from joining the meetings they created
-        meeting_creator = Meeting.objects.get(pk=kwargs["pk"]).created_by
-        if not request.user.is_authenticated or request.user == meeting_creator:
-            return self.handle_no_permission()
-        return super().dispatch(request, *args, **kwargs)
+        meeting_creator = Meeting.objects.get(pk=self.kwargs["pk"]).created_by
+        return self.request.user.is_authenticated and self.request.user != meeting_creator
 
     form_class = MeetingJoinForm
     model = Meeting
