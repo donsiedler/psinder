@@ -177,6 +177,10 @@ class MeetingAddForm(forms.ModelForm):
         ]
         labels = FORM_LABELS_PL
 
+        widgets = {
+            "participating_dogs": forms.CheckboxSelectMultiple
+        }
+
 
 class MeetingSearchForm(forms.Form):
     def __init__(self, *args, **kwargs):
