@@ -22,6 +22,6 @@
                 Nie masz jeszcze żadnych spotkań :(
             </li>
         {% endfor %}
-    <a href="{% url "add-meeting" %}">Dodaj spotkanie</a>
-    <a href="{% url "search-meetings" %}">Wyszukaj spotkanie</a>
+    <a href="{% url "add-meeting" %}" class="btn btn-primary my-3">Dodaj spotkanie</a>
+    <a href="{% url "search-meetings" %}" class="btn btn-light">Wyszukaj spotkanie</a>
 {% endblock content %}

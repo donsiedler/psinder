@@ -5,13 +5,72 @@
 {% endblock head %}
 
 {% block content %}
-    <img src="{{ dog.photo.url }}" width="200" alt="Zdjęcie profilowe">
-    <h3>{{ dog.name }}</h3>
-    <p>Wiek: {{ dog.age }}</p>
-    <p>Płeć: {{ dog.sex }}</p>
-    <p>Rasa: {{ dog.breed }}</p>
-    <p>Wielkość psa: {{ dog.size }}</p>
-    <p>Opis: {{ dog.bio }}</p>
-    <a href="{% url "edit-dog-profile" dog.pk %}">Edytuj</a>
-    <a href="{% url "dogs" %}">Powrót</a>
+    <section class="w-100">
+        <div class="container py-2 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col col-lg-12 col-xl-10">
+                    <div class="card">
+                        <div class="rounded-top text-white d-flex flex-row"
+                             style="background:linear-gradient(90deg, rgba(253, 88, 88, 1) 0%, rgba(247, 122, 67, 0.85) 100%); height:200px;">
+                            <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+                                <img src="{{ dog.photo.url }}"
+                                     alt="Zdjęcie profilowe" class="img-fluid img-thumbnail mt-4 mb-2"
+                                     style="width: 150px; z-index: 1">
+
+                                <a href="{% url "edit-dog-profile" dog.pk %}" style="z-index: 1;">
+                                    <button type="button" class="btn btn-psinder">
+                                        Edytuj profil
+                                    </button>
+                                </a>
+                            </div>
+                            <div class="ms-3" style="margin-top: 100px;">
+                                <h3>{{ dog.name }}</h3>
+                                <p>Pies użytkownika {{ dog.owner.username }}</p>
+                            </div>
+                        </div>
+                        <div class="p-4 text-black" style="background-color: #f8f9fa;">
+                            <div class="d-flex justify-content-end text-center py-1">
+                                <div>
+                                    <p class="mb-1 h5">{{ dog.owner.address.city }}</p>
+                                    <p class="small text-muted mb-0">Miasto</p>
+                                </div>
+                                <div class="px-3">
+                                    <p class="mb-1 h5">{{ dog.breed }}</p>
+                                    <p class="small text-muted mb-0">Rasa</p>
+                                </div>
+                                <div>
+                                    <p class="mb-1 h5">{{ dog.age }}</p>
+                                    <p class="small text-muted mb-0">Wiek</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-4 text-black">
+                            <div class="mb-5">
+                                <p class="lead fw-normal mb-1">Bio</p>
+                                <div class="p-4" style="background-color: #f8f9fa;">
+                                    <p class="font-italic mb-1">{{ dog.bio }}</p>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <p class="lead fw-normal mb-0">Ostatnie spotkania</p>
+                            </div>
+                        <!---
+                            {% for dog in user.get_user_dogs %}
+                                <div class="row g-2">
+                                    <div class="col mb-2">
+                                        <a href="{% url "dog-profile" dog.pk %}">
+                                            <img src="{{ dog.photo.url }}" alt="image 1" class="w-100 rounded-3">
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        ---->
+                        </div>
+                    </div>
+                  <a href="{% url "dogs" %}" class="btn btn-secondary">Powrót</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
 {% endblock content %}

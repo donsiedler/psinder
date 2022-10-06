@@ -11,19 +11,13 @@
         {% csrf_token %}
         {% crispy form %}
     </form>
-    <a href="{% url "dashboard" %}">
-        <button type="button" class="btn btn-secondary">Powrót</button>
-    </a>
+    <a href="{% url "dashboard" %}" class="btn btn-secondary">Powrót</a>
     <h3>Dane adresowe</h3>
     <ul>
         <li>Miasto: {{ user.address.city }}</li>
         <li>Kod pocztowy: {{ user.address.post_code }}</li>
         <li>Ulica i numer: {{ user.address.street }}</li>
     </ul>
-    <a href="{% url "change-address" user.pk %}">
-        <button type="button" class="btn btn-primary">Dodaj/zmień adres</button>
-    </a>
-    <a href="{% url "change-password" user.pk %}">
-        <button type="button" class="btn btn-primary">Zmień hasło</button>
-    </a>
+    <a href="{% url "change-address" user.pk %}" class="btn btn-light">Dodaj/zmień adres</a>
+    <a href="{% url "change-password" user.pk %}" class="btn btn-light">Zmień hasło</a>
 {% endblock content %}

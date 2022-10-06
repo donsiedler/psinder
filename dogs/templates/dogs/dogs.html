@@ -6,16 +6,47 @@
 
 {% block content %}
     <h3>Moje psiaki</h3>
-    <ul>
         {% for dog in dogs %}
-            <li>
-                <a href="{% url "dog-profile" dog.pk %}">{{ dog.name }}</a>
-            </li>
+            <div class="row d-flex justify-content-auto align-items-center h-100">
+              <div class="col col-md-9 col-lg-7 col-xl-5">
+                <div class="card mt-3" style="border-radius: 15px;">
+                  <div class="card-body p-4">
+                    <div class="d-flex text-black">
+                      <div class="flex-shrink-0">
+                        <img src="{{dog.photo.url}}"
+                          alt="Zdjęcie profilowe" class="img-fluid"
+                          style="width: 180px; border-radius: 10px;">
+                      </div>
+                      <div class="flex-grow-1 ms-3">
+                        <h5 class="mb-1">{{ dog.name }}</h5>
+                        <p class="mb-2 pb-1" style="color: #2b2a2a;">{{ dog.bio }}</p>
+                        <div class="d-flex justify-content-start rounded-3 p-2 mb-2"
+                          style="background-color: #efefef;">
+                          <div>
+                            <p class="small text-muted mb-1">Płeć</p>
+                            <p class="mb-0">{{ dog.get_sex_display }}</p>
+                          </div>
+                          <div class="px-3">
+                            <p class="small text-muted mb-1">Wiek</p>
+                            <p class="mb-0">{{ dog.age }}</p>
+                          </div>
+                          <div class="px-3">
+                            <p class="small text-muted mb-1">Rasa</p>
+                            <p class="mb-0">{{ dog.breed }}</p>
+                          </div>
+                        </div>
+                        <div class="d-flex pt-1">
+                          <a href="{% url "dog-profile" dog.pk %}" class="btn btn-primary flex-grow-1 mx-1">Profil pieska</a>
+                          <a href="{% url "edit-dog-profile" dog.pk %}" class="btn btn-secondary flex-grow-1">Edytuj</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
         {% empty %}
-            <li>
-                Nie dodano żadnych piesków :(
-            </li>
+            <p>Nie dodano żadnych piesków :(</p>
         {% endfor %}
-    </ul>
-    <a href="{% url "add-dog" %}">Dodaj psiaka</a>
+    <a href="{% url "add-dog" %}" class="btn btn-primary mt-3">Dodaj psiaka</a>
 {% endblock content %}
