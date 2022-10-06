@@ -57,12 +57,16 @@ class ThreadView(UserPassesTestMixin, View):
     def get(self, request, pk, *args, **kwargs):
         form = MessageForm()
         thread = Thread.objects.get(pk=pk)
-        message_list = Message.objects.filter(thread__pk__contains=pk)
+        message_list = Message.objects.filter(thread__pk__contains=pk).order_by("date")
         context = {
             "form": form,
             "thread": thread,
             "message_list": message_list,
         }
+        for message in message_list:
+            if message.sender_user != request.user:
+                message.is_read = True
+                message.save()
         return render(request, "user_messages/thread.html", context)
 
 
