@@ -247,6 +247,19 @@ class MeetingUpdateView(UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         other_users_dogs = list(self.object.participating_dogs.all().exclude(owner=self.request.user))
+        street = form.cleaned_data.get("street")
+        city = form.cleaned_data.get("city")
+        post_code = form.cleaned_data.get("post_code")
+
+        # Search the database if address already exists
+        try:
+            address = Address.objects.get(street=street, city=city, post_code=post_code)
+
+        # Create a new address if it doesn't exist in the database
+        except ObjectDoesNotExist:
+            address = Address.objects.create(street=street, city=city, post_code=post_code)
+
+        self.object.address = address
         response = super().form_valid(form)
         [self.object.participating_dogs.add(dog) for dog in other_users_dogs]
         return response
