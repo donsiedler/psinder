@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib import messages
-from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.shortcuts import render, redirect
@@ -12,7 +12,7 @@ from .models import Thread, Message
 User = get_user_model()
 
 
-class ThreadsList(View):
+class ThreadsList(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         threads = Thread.objects.filter(Q(sender=request.user) | Q(recipient=request.user))
         context = {
@@ -21,7 +21,7 @@ class ThreadsList(View):
         return render(request, "user_messages/inbox.html", context)
 
 
-class ThreadCreate(View):
+class ThreadCreate(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         form = ThreadCreateForm()
         return render(request, "user_messages/thread_create.html", {"form": form})
@@ -70,7 +70,7 @@ class ThreadView(UserPassesTestMixin, View):
         return render(request, "user_messages/thread.html", context)
 
 
-class MessageCreate(View):
+class MessageCreate(LoginRequiredMixin, View):
     def post(self, request, pk, *args, **kwargs):
         thread = Thread.objects.get(pk=pk)
         if thread.recipient == request.user:

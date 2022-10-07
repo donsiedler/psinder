@@ -1,7 +1,12 @@
 import pytest
 from django.contrib.auth import get_user_model
+from django.core.exceptions import PermissionDenied
 
 User = get_user_model()
+
+
+class Forbidden(Exception):
+    pass
 
 
 @pytest.mark.django_db
@@ -45,3 +50,95 @@ def test_user_can_logout(client):
     response = client.get("/logout/")
     assert response.status_code == 302
     assert response.url == "/"
+
+
+def test_view_user_profile(user_create, client):
+    client.login(username="test_user", password="T3st_p@$$word")
+    response = client.get("/dashboard/")
+    assert response.status_code == 200
+
+
+def test_view_user_settings_profile(user_create, client):
+    user = user_create
+    client.login(username="test_user", password="T3st_p@$$word")
+    response = client.get(f"/settings/{user.pk}/")
+    assert response.status_code == 200
+    assert user == response.context_data["object"]
+
+
+@pytest.mark.django_db
+def test_user_can_change_settings(user_create, client):
+    user = user_create
+    client.login(username="test_user", password="T3st_p@$$word")
+    data = {
+        "first_name": "test_name",
+        "bio": "Lorem ipsum",
+        "gender": 1,
+        "dob": "1991-07-01"
+    }
+    response = client.post(f"/settings/{user.pk}/", data)
+    assert response.status_code == 302
+    user = User.objects.all().first()
+    assert user.first_name == "test_name"
+    assert user.bio == "Lorem ipsum"
+    assert user.gender == 1
+    assert str(user.dob) == "1991-07-01"
+
+
+@pytest.mark.django_db
+def test_user_can_change_address(user_create, client):
+    user = user_create
+    client.login(username="test_user", password="T3st_p@$$word")
+    data = {
+        "street": "Sezamkowa",
+        "city": "New York",
+        "post_code": "00-000",
+    }
+    response = client.post(f"/settings/{user.pk}/change_address/", data)
+    assert response.status_code == 302
+    user = User.objects.all().first()
+    assert user.address
+    assert user.address.street == "Sezamkowa"
+    assert user.address.city == "New York"
+    assert user.address.post_code == "00-000"
+
+
+def test_user_can_change_password(user_create, client):
+    user = user_create
+    client.login(username="test_user", password="T3st_p@$$word")
+    data = {
+        "new_password": "new_T3st_p@$$word",
+        "new_password2": "new_T3st_p@$$word",
+    }
+    response = client.post(f"/settings/{user.pk}/change_password/", data)
+    assert response.status_code == 302
+    client.get("/logout/")
+    client.login(username="test_user", password="new_T3st_p@$$word")
+    assert user.is_authenticated
+
+
+@pytest.mark.parametrize("url, status_code, redirect_url", (
+        ("/dashboard/", 302, "/login/?next=/dashboard/"),
+        ("/profiles_search/", 302, "/login/?next=/profiles_search/"),
+        ("/meetings/", 302, "/login/?next=/meetings/"),
+        ("/add_meeting/", 302, "/login/?next=/add_meeting/"),
+        ("/meetings/search/", 302, "/login/?next=/meetings/search/"),
+        ("/add_dog/", 302, "/login/?next=/add_dog/"),
+        ("/dogs/", 302, "/login/?next=/dogs/"),
+        ("/inbox/", 302, "/login/?next=/inbox/"),
+        ("/inbox/create_thread/", 302, "/login/?next=/inbox/create_thread/"),
+))
+def test_user_cannot_access_restricted_views_without_login(client, url, status_code, redirect_url):
+    response = client.get(url)
+    assert response.status_code == status_code
+    assert response.url == redirect_url
+
+
+@pytest.mark.django_db
+def test_user_cannot_edit_other_users_settings(new_user1, new_user2, client):
+    user2 = new_user2
+    client.login(username="test_user", password="T3st_p@$$word")
+    assert client.get(f"/settings/{user2.pk}/").status_code == 403
+    assert client.get(f"/settings/{user2.pk}/change_address/").status_code == 403
+    assert client.get(f"/settings/{user2.pk}/change_password/").status_code == 403
+

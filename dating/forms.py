@@ -101,13 +101,11 @@ class UserProfileSettingsForm(forms.ModelForm):
         self.helper = FormHelper(self)
         self.helper.add_input(Submit('submit', "Zapisz zmiany"))
 
-    username = forms.CharField(widget=forms.TextInput(attrs={"disabled": "disabled"}), label="Nazwa użytkownika")
     gender = forms.ChoiceField(widget=forms.RadioSelect, choices=GENDERS, label="Płeć")
 
     class Meta:
         model = User
         fields = [
-            "username",
             "email",
             "first_name",
             "last_name",

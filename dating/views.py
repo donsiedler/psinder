@@ -157,7 +157,7 @@ class UserChangeAddressView(UserPassesTestMixin, View):
         return render(request, "dating/change_address.html", context={"form": form})
 
 
-class MeetingListView(ListView):
+class MeetingListView(LoginRequiredMixin, ListView):
     model = Meeting
     template_name = "dating/meetings.html"
     context_object_name = "meetings"
