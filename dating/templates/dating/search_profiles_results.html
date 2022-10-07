@@ -29,7 +29,9 @@
                   </div>
                 </div>
                 <div class="d-flex pt-1">
-                  <button type="button" class="btn btn-outline-primary me-1 flex-grow-1">Wiadomość</button>
+                  <a href="{% url "create-thread" %}">
+                    <button type="button" class="btn btn-outline-primary me-1 flex-grow-1">Wiadomość</button>
+                  </a>
                   <a href="{% url "user-profile" profile.slug %}">
                     <button type="button" class="btn btn-primary flex-grow-1">Wyświetl profil</button>
                   </a>
