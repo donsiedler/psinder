@@ -50,3 +50,11 @@ def test_user_can_view_dog_profile(new_dog, client):
     assert response.status_code == 200
     assert response.context["object"] == new_dog
     assert response.context["object"].bio == "test"
+
+
+def test_user_can_search_dogs_profiles(new_dog, client):
+    client.login(username="test_user", password="T3st_p@$$word")
+    response = client.get("/profiles_search/")
+    assert response.status_code == 200
+    response = client.post("/profiles_search/", data={"query": "test"})
+    assert response.context["dog_profiles"].count() == 1
