@@ -1,6 +1,11 @@
 import pytest
+from pytest_factoryboy import register
 from django.contrib.auth import get_user_model
 from django.test import Client
+
+from .factories import UserFactory
+
+register(UserFactory)
 
 User = get_user_model()
 

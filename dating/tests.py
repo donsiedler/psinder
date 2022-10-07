@@ -142,3 +142,20 @@ def test_user_cannot_edit_other_users_settings(new_user1, new_user2, client):
     assert client.get(f"/settings/{user2.pk}/change_address/").status_code == 403
     assert client.get(f"/settings/{user2.pk}/change_password/").status_code == 403
 
+
+@pytest.mark.django_db
+def test_user_can_view_other_users_profiles(new_user1, new_user2, client):
+    user2 = new_user2
+    client.login(username="test_user", password="T3st_p@$$word")
+    response = client.get(f"/profile/{user2.slug}/")
+    assert response.status_code == 200
+    assert response.context["user_profile"] == user2
+
+
+@pytest.mark.django_db
+def test_user_can_search_users_profiles(new_user1, new_user2, client):
+    client.login(username="test_user", password="T3st_p@$$word")
+    response = client.get("/profiles_search/")
+    assert response.status_code == 200
+    response = client.post("/profiles_search/", data={"query": "test"})
+    assert response.context["user_profiles"].count() == 2
