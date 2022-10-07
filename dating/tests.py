@@ -1,7 +1,14 @@
 import pytest
+from faker import Faker
+from random import randint
+
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
 
+from dating.models import Meeting
+from dogs.models import Dog
+
+fake = Faker()
 User = get_user_model()
 
 
@@ -159,3 +166,100 @@ def test_user_can_search_users_profiles(new_user1, new_user2, client):
     assert response.status_code == 200
     response = client.post("/profiles_search/", data={"query": "test"})
     assert response.context["user_profiles"].count() == 2
+
+
+def test_user_can_add_new_meeting(new_dog, client):
+    data = {
+        "date": fake.date(),
+        "time": fake.time(),
+        "max_users": randint(2, 10),
+        "max_dogs": randint(0, 10),
+        "participating_dogs": new_dog.pk,
+        "city": fake.city(),
+    }
+    client.login(username="test_user", password="T3st_p@$$word")
+    response = client.get("/add_meeting/")
+    assert response.status_code == 200
+    response = client.post("/add_meeting/", data)
+    assert response.status_code == 302
+    assert Meeting.objects.all().count() == 1
+
+
+def test_user_can_edit_meeting_they_created(new_meeting, client):
+    new_data = {
+        "date": fake.date(),
+        "time": fake.time(),
+        "max_users": randint(2, 10),
+        "max_dogs": randint(0, 10),
+        "participating_dogs": Dog.objects.first().pk,
+        "city": fake.city(),
+    }
+    response = client.get(f"/meeting/{new_meeting.pk}/edit/")
+    assert response.status_code == 200
+    old_date = new_meeting.date
+    old_time = new_meeting.time
+    response = client.post(f"/meeting/{new_meeting.pk}/edit/", new_data)
+    assert response.status_code == 302
+    assert Meeting.objects.count() == 1
+    assert Meeting.objects.first().date != old_date
+    assert Meeting.objects.first().time != old_time
+
+
+def test_user_can_delete_meeting_they_created(new_meeting, client):
+    response = client.get(f"/meeting/{new_meeting.pk}/delete/")
+    assert response.status_code == 200
+    assert Meeting.objects.count() == 1
+    response = client.post(f"/meeting/{new_meeting.pk}/delete/")
+    assert response.status_code == 302
+    assert Meeting.objects.count() == 0
+
+
+def test_user_can_search_meetings(new_meeting, client):
+    data = {
+        "city": new_meeting.address.city,
+        "date": new_meeting.date,
+        "target_user_gender": new_meeting.created_by.gender,
+    }
+    response = client.get("/meetings/search/")
+    assert response.status_code == 200
+    assert Meeting.objects.count() == 1
+    response = client.post("/meetings/search/", data)
+    assert response.status_code == 200
+    assert response.context["meetings"].count() == 1
+    assert response.context["meetings"].first() == new_meeting
+
+
+def test_user_can_join_meetings(new_meeting, new_dog, new_user2, client):
+    client.logout()
+    client.login(username="test_user2", password="T3st_p@$$word")
+    response = client.get(f"/meeting/{new_meeting.pk}/join/")
+    assert response.status_code == 200
+    dog = Dog.objects.create(
+        name="test_dog",
+        age=3,
+        sex=0,
+        breed="test",
+        size=2,
+        bio="test",
+        owner=new_user2,
+    )
+    data = {
+        "participating_dogs": dog.pk,
+        "max_dogs": new_meeting.max_dogs,
+        "max_users": new_meeting.max_users,
+    }
+    response = client.post(f"/meeting/{new_meeting.pk}/join/", data)
+    assert response.status_code == 302
+    assert new_user2 in new_meeting.participating_users.all()
+    assert dog in new_meeting.participating_dogs.all()
+
+
+def test_user_cannot_join_their_own_meeting(new_meeting, client):
+    assert client.get(f"/meeting/{new_meeting.pk}/join/").status_code == 403
+
+
+def test_user_cannot_edit_or_delete_other_users_meetings(new_meeting, new_user2, client):
+    client.logout()
+    client.login(username="test_user2", password="T3st_p@$$word")
+    assert client.get(f"/meeting/{new_meeting.pk}/edit/").status_code == 403
+    assert client.get(f"/meeting/{new_meeting.pk}/delete/").status_code == 403
