@@ -18,9 +18,11 @@
                 </div>
             </div>
         {% empty %}
-            <li>
-                Nie masz jeszcze żadnych spotkań :(
-            </li>
+            <div class="row my-5">
+                <div class="col-md-12">
+                    <p class="empty-text">Brak spotkań do wyświetlenia</p>
+                </div>
+            </div>
         {% endfor %}
     <a href="{% url "add-meeting" %}" class="btn btn-primary my-3">Dodaj spotkanie</a>
     <a href="{% url "search-meetings" %}" class="btn btn-light">Wyszukaj spotkanie</a>

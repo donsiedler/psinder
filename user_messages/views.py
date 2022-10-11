@@ -63,10 +63,7 @@ class ThreadView(UserPassesTestMixin, View):
             "thread": thread,
             "message_list": message_list,
         }
-        for message in message_list:
-            if message.sender_user != request.user:
-                message.is_read = True
-                message.save()
+        message_list.filter(is_read=False).exclude(sender_user=request.user).update(is_read=True)
         return render(request, "user_messages/thread.html", context)
 
 
